@@ -1,7 +1,7 @@
 package com.example.wbsdpmptsp
 
 import android.app.Application
-import dagger.hilt.android.HiltAndroidApplication
+import dagger.hilt.android.HiltAndroidApp
 
-@HiltAndroidApplication
+@HiltAndroidApp
 class WbsApplication : Application()
