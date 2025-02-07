@@ -43,6 +43,7 @@ fun BottomNav(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     val customBlue = Color(0xFF1A237E)
+    val hoverBackground = Color(0xFFDCE7F4)
 
     Box(modifier = modifier) {
         NavigationBar(
@@ -69,13 +70,30 @@ fun BottomNav(
                             }
                         },
                         icon = {
-                            Icon(
-                                painter = painterResource(id = item.icon),
-                                contentDescription = item.label,
-                                modifier = Modifier.size(28.dp),
-                                tint = customBlue
-                            )
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier.size(56.dp)
+                            ) {
+                                if (currentRoute == item.route) {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(56.dp)
+                                            .background(hoverBackground, shape = CircleShape)
+                                    )
+                                }
+                                Icon(
+                                    painter = painterResource(id = item.icon),
+                                    contentDescription = item.label,
+                                    modifier = Modifier.size(28.dp),
+                                    tint = customBlue
+                                )
+                            }
                         },
+                        colors = NavigationBarItemDefaults.colors(
+                            indicatorColor = Color.Transparent,
+                            selectedIconColor = customBlue,
+                            unselectedIconColor = customBlue
+                        )
                     )
                 }
             }
@@ -98,7 +116,7 @@ fun BottomNav(
                 Box(
                     modifier = Modifier
                         .size(72.dp)
-                        .background(Color(0xFFDCE7F4), shape = CircleShape)
+                        .background(hoverBackground, shape = CircleShape)
                 )
             }
 

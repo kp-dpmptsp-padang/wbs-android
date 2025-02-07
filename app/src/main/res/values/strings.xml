@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">CLEAR DPMPTSP</string>
+    <string name="already_regis">Sudah punya akun? Masuk disini</string>
+    <string name="register">Daftar</string>
+    <string name="login">Masuk</string>
+    <string name="email">Email</string>
+    <string name="password">Kata Sandi</string>
+    <string name="confirm_password">Konfirmasi Kata Sandi</string>
+    <string name="name">Nama</string>
+    <string name="not_registered">Belum punya akun? Daftar disini</string>
+    <string name="forgot_password">Lupa kata sandi?</string>
+    <string name="logo">DPMPTSP Logo</string>
+    <string name="logo_clear">Logo CLEAR</string>
+    <string name="kota">Kota Padang</string>
+    <string name="wbs">WBS DPMPTSP</string>
+    <string name="login_failed">Login Gagal, Silahkan Coba Lagi</string>
+    <string name="register_failed">Pendaftaran Gagal, Silahkan Coba Lagi</string>
+    <string name="register_success">Pendaftaran Berhasil</string>
+    <string name="email_exist">Email Sudah Terdaftar</string>
+    <string name="password_not_match">Kata Sandi Tidak Sama</string>
+    <string name="email_not_valid">Email Tidak Valid</string>
+    <string name="password_short">Kata Sandi Minimal 6 Karakter</string>
+    <string name="password_empty">Kata Sandi Tidak Boleh Kosong</string>
+    <string name="email_empty">Email Tidak Boleh Kosong</string>
+    <string name="name_empty">Nama Tidak Boleh Kosong</string>
+    <string name="confirm_password_empty">Konfirmasi Kata Sandi Tidak Boleh Kosong</string>
+    <string name="login_success">Login Berhasil</string>
+    <string name="email_or_password_wrong">Email atau Kata Sandi Salah</string>
 </resources>
