@@ -41,6 +41,14 @@ class UserPreference(private val context: Context) {
         )
     }
 
+    fun getAccessToken(): Flow<String?> = context.dataStore.data.map { preferences ->
+        preferences[accessTokenKey]
+    }
+
+    fun getRefreshToken(): Flow<String?> = context.dataStore.data.map { preferences ->
+        preferences[refreshTokenKey]
+    }
+
     suspend fun clearUser() {
         context.dataStore.edit { preferences ->
             preferences.clear()
