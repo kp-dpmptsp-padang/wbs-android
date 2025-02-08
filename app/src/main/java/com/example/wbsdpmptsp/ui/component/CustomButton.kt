@@ -29,7 +29,8 @@ fun CustomButton(
         onClick = onClick,
         modifier = modifier,
         shape = shape,
-        colors = ButtonDefaults.buttonColors(containerColor = backgroundColor)
+        colors = ButtonDefaults.buttonColors(containerColor = backgroundColor),
+        enabled = enabled
     ) {
         Text(text = text, fontSize = 14.sp, color = textColor)
     }

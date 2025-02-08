@@ -26,4 +26,16 @@
     <string name="confirm_password_empty">Konfirmasi Kata Sandi Tidak Boleh Kosong</string>
     <string name="login_success">Login Berhasil</string>
     <string name="email_or_password_wrong">Email atau Kata Sandi Salah</string>
+    <string name="profile">Profile</string>
+    <string name="account_info">Informasi Akun</string>
+    <string name="report_history">Riwayat Pelaporan</string>
+    <string name="track_anonymous_report">Lacak Laporan Anonim</string>
+    <string name="track_here">Melapor secara Anonim? Klik disini</string>
+    <string name="report_total">Jumlah Laporan Dibuat</string>
+    <string name="faq">FAQ</string>
+    <string name="about_us">Tentang Kami</string>
+    <string name="faq_text">Beberapa pertanyaan bantuan untuk pengguna</string>
+    <string name="about_us_text">Sekilas tentang kami</string>
+    <string name="logout">Logout</string>
+    <string name="logout_success">Logout Sukses</string>
 </resources>

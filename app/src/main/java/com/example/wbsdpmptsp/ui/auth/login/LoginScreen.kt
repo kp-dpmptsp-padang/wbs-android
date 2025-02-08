@@ -1,6 +1,5 @@
 package com.example.wbsdpmptsp.ui.auth.login
 
-import android.R.attr.name
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
