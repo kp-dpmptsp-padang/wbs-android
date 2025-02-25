@@ -7,6 +7,7 @@ import com.example.wbsdpmptsp.di.Injection
 import com.example.wbsdpmptsp.repository.UserRepository
 import com.example.wbsdpmptsp.ui.auth.login.LoginViewModel
 import com.example.wbsdpmptsp.ui.auth.register.RegisterViewModel
+import com.example.wbsdpmptsp.ui.history.HistoryViewModel
 import com.example.wbsdpmptsp.ui.profile.ProfileViewModel
 
 class ViewModelFactory private constructor(
@@ -24,6 +25,9 @@ class ViewModelFactory private constructor(
             }
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
                 ProfileViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(HistoryViewModel::class.java) -> {
+                HistoryViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

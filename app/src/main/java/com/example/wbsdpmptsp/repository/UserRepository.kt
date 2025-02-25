@@ -6,7 +6,9 @@ import com.example.wbsdpmptsp.data.remote.request.LogoutRequest
 import com.example.wbsdpmptsp.data.remote.request.RegisterRequest
 import com.example.wbsdpmptsp.data.remote.response.AuthResponse
 import com.example.wbsdpmptsp.data.remote.response.ErrorResponse
+import com.example.wbsdpmptsp.data.remote.response.HistoryResponse
 import com.example.wbsdpmptsp.data.remote.response.MessageResponse
+import com.example.wbsdpmptsp.data.remote.response.ProfileResponse
 import com.example.wbsdpmptsp.data.remote.retro.ApiService
 import com.example.wbsdpmptsp.utils.Result
 import com.google.gson.Gson
@@ -96,6 +98,50 @@ class UserRepository private constructor(
                 } ?: Result.Error("Logout failed")
             } else {
                 Result.Error(response.message() ?: "Logout failed")
+            }
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "An error occurred")
+        }
+    }
+
+    suspend fun profile(): Result<ProfileResponse> {
+        return try {
+            val accessToken = userPreference.getAccessToken().first()
+
+            if (accessToken == null) {
+                return Result.Error("Access token not found")
+            }
+
+            val response = apiService.profile("Bearer $accessToken")
+
+            if (response.isSuccessful) {
+                response.body()?.let { profileResponse ->
+                    Result.Success(profileResponse)
+                } ?: Result.Error("Profile not found")
+            } else {
+                Result.Error(response.message() ?: "Profile not found")
+            }
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "An error occurred")
+        }
+    }
+
+    suspend fun history(): Result<HistoryResponse>{
+        return try {
+            val accessToken = userPreference.getAccessToken().first()
+
+            if (accessToken == null) {
+                return Result.Error("Access token not found")
+            }
+
+            val response = apiService.history("Bearer $accessToken")
+
+            if (response.isSuccessful) {
+                response.body()?.let { historyResponse ->
+                    Result.Success(historyResponse)
+                } ?: Result.Error("History not found")
+            } else {
+                Result.Error(response.message() ?: "History not found")
             }
         } catch (e: Exception) {
             Result.Error(e.message ?: "An error occurred")

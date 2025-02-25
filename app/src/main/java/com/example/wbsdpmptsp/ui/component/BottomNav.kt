@@ -47,7 +47,9 @@ fun BottomNav(
 
     Box(modifier = modifier) {
         NavigationBar(
-            modifier = Modifier.height(80.dp),
+            modifier = Modifier
+                .height(80.dp)
+                .background(Color.White),
             containerColor = MaterialTheme.colorScheme.surface,
         ) {
             items.forEachIndexed { index, item ->
