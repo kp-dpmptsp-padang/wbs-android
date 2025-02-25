@@ -1,5 +1,6 @@
 [versions]
-agp = "8.8.0"
+accompanistPager = "0.28.0"
+agp = "8.8.1"
 converterGson = "2.11.0"
 datastorePreferences = "1.1.2"
 hiltAndroid = "2.51.1"
@@ -23,6 +24,8 @@ hilt = "2.50"
 runtimeLivedata = "1.7.7"
 
 [libraries]
+accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanistPager" }
+accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanistPager" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastorePreferences" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }

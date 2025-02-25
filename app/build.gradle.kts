@@ -68,6 +68,9 @@ dependencies {
     implementation (libs.kotlinx.coroutines.android)
     implementation (libs.kotlinx.coroutines.play.services)
 
+    implementation (libs.accompanist.pager)
+    implementation (libs.accompanist.pager.indicators)
+
     implementation(libs.androidx.datastore)
     implementation(libs.androidx.datastore.preferences)
 

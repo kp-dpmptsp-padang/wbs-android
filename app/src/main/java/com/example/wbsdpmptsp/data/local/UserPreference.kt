@@ -1,6 +1,7 @@
 package com.example.wbsdpmptsp.data.local
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -23,12 +24,12 @@ class UserPreference(private val context: Context) {
 
     suspend fun saveUser(response: AuthResponse) {
         context.dataStore.edit { preferences ->
-            preferences[accessTokenKey] = response.accessToken ?: ""
-            preferences[refreshTokenKey] = response.refreshToken ?: ""
-            preferences[userIdKey] = response.user?.id.toString()
-            preferences[userNameKey] = response.user?.name ?: ""
-            preferences[userEmailKey] = response.user?.email ?: ""
-            preferences[userRoleKey] = response.user?.role ?: ""
+            preferences[accessTokenKey] = response.data?.accessToken ?: ""
+            preferences[refreshTokenKey] = response.data?.refreshToken ?: ""
+            preferences[userIdKey] = response.data?.user?.id.toString()
+            preferences[userNameKey] = response.data?.user?.name ?: ""
+            preferences[userEmailKey] = response.data?.user?.email ?: ""
+            preferences[userRoleKey] = response.data?.user?.role ?: ""
         }
     }
 

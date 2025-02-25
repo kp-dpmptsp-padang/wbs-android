@@ -2,6 +2,7 @@ package com.example.wbsdpmptsp.ui.profile
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CircularProgressIndicator
@@ -23,6 +24,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.wbsdpmptsp.R
 import com.example.wbsdpmptsp.data.remote.response.MessageResponse
+import com.example.wbsdpmptsp.data.remote.response.ProfileResponse
 import com.example.wbsdpmptsp.ui.ViewModelFactory
 import com.example.wbsdpmptsp.ui.component.BottomNav
 import com.example.wbsdpmptsp.ui.component.InfoSection
@@ -38,9 +40,18 @@ fun ProfileScreen(
 ) {
     val context = LocalContext.current
     val logoutResult: Result<MessageResponse>? = viewModel.logoutResult.observeAsState(initial = null).value
+    val profileResult: Result<ProfileResponse> = viewModel.profileResult.observeAsState(initial = Result.Loading).value
     val isLoading: Boolean = viewModel.isLoading.observeAsState(initial = false).value
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    val userData = when (profileResult) {
+        is Result.Success -> profileResult.data.data?.user
+        else -> null
+    }
+
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.White)
+    ) {
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -60,8 +71,8 @@ fun ProfileScreen(
             InfoSection(
                 title = stringResource(R.string.account_info),
                 items = listOf(
-                    Triple(R.drawable.ic_name, stringResource(R.string.name), stringResource(R.string.name)),
-                    Triple(R.drawable.ic_email, stringResource(R.string.email), stringResource(R.string.email))
+                    Triple(R.drawable.ic_name, stringResource(R.string.name), userData?.name ?: ""),
+                    Triple(R.drawable.ic_email, stringResource(R.string.email), userData?.email ?: "")
                 )
             )
 
@@ -71,7 +82,8 @@ fun ProfileScreen(
                 title = stringResource(R.string.report_history),
                 items = listOf(
                     Triple(R.drawable.ic_history_profile, stringResource(R.string.report_total),
-                        "0")
+                        userData?.reportCount.toString()
+                    )
                 ),
                 onItemClick = {
                     navController.navigate("history")
@@ -168,6 +180,15 @@ fun ProfileScreen(
                 }
             }
 
+            LaunchedEffect(profileResult) {
+                when (profileResult) {
+                    is Result.Error -> {
+                        Toast.makeText(context, profileResult.error, Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {}
+                }
+            }
+
             Image(
                 painter = painterResource(R.drawable.ic_logout),
                 contentDescription = stringResource(R.string.logout),
@@ -183,6 +204,8 @@ fun ProfileScreen(
         if (isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
+
+        Spacer(modifier = Modifier.height(64.dp))
 
         BottomNav(
             modifier = Modifier

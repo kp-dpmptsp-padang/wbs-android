@@ -38,4 +38,46 @@
     <string name="about_us_text">Sekilas tentang kami</string>
     <string name="logout">Logout</string>
     <string name="logout_success">Logout Sukses</string>
+    <string name="what_is_clear">Apa itu CLEAR?</string>
+    <string name="clear_text">CLEAR adalah inovasi sistem pelaporan pelanggaran yang  memungkinkan Anda melaporkan tindakan fraud, korupsi, gratifikasi, dan  penyalahgunaan wewenang yang terjadi di lingkungan DPMPTSP.</string>
+    <string name="start_report">Buat Laporan Baru</string>
+    <string name="violation_type">Jenis Pelanggaran</string>
+    <string name="how_to_report">Cara Melaporkan</string>
+    <string name="anonymous">Kerahasiaan Terjamin</string>
+    <string name="identity_secret">Identitas Anda akan dilindungi dan tidak akan diungkapkan kepada pihak yang bersangkutan</string>
+    <string name="tracking">Lacak Laporan</string>
+    <string name="need_help">Butuh Bantuan?</string>
+    <string name="email_dpmptsp">dpmptsp@padang.go.id</string>
+    <string name="phone_dpmptsp">081374078088</string>
+    <string name="notif">Notifikasi</string>
+    <string name="hero_image">Hero Section</string>
+    <string name="icon">Icon</string>
+    <string name="form">Form Pelaporan Whistleblowing System</string>
+    <string name="step">Panduan</string>
+
+    <string name="pungli">1. Pungutan Liar (Pungli)</string>
+    <string name="sop">2. Pelayanan yang tidak sesuai SOP</string>
+    <string name="gratifikasi">3. Gratifikasi</string>
+    <string name="penyalahgunaan">4. Penyalahgunaan Wewenang</string>
+    <string name="layanan">5. Tidak Memberikan Pelayanan</string>
+
+    <string name="how_to_report_text1">1. Pilih menu Pelaporan</string>
+    <string name="how_to_report_text2">2. Isi data diri dengan lengkap</string>
+    <string name="how_to_report_text3">3. Isi data pelanggaran</string>
+    <string name="how_to_report_text4">4. Isi detail kejadian</string>
+    <string name="how_to_report_text5">5. Unggah bukti pelanggaran (Opsional)</string>
+    <string name="how_to_report_text6">6. Klik tombol Kirim</string>
+
+    <string name="judul">Judul Laporan</string>
+    <string name="pelanggaran">Pelanggaran yang Dilakukan</string>
+    <string name="lokasi">Lokasi Pelanggaran</string>
+    <string name="tanggal">Tanggal Kejadian</string>
+    <string name="pihakTerlibat">Nama Pihak yang Terlibat</string>
+    <string name="next">Selanjutnya</string>
+
+    <string name="rincian_kejadian">Rincian Kejadian</string>
+    <string name="bukti_pelanggaran">Unggah Lampiran Bukti</string>
+    <string name="lapor_anonim">Lapor sebagai Anonim</string>
+    <string name="form2">Rincian dan Lampiran</string>
+
 </resources>
