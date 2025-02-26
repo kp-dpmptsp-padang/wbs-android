@@ -21,6 +21,7 @@ class HistoryViewModel(private val repository: HistoryRepository) : ViewModel() 
 
     fun getHistory(status: String) {
         _loading.value = true
+        _error.value = ""
         viewModelScope.launch {
             when (val result = repository.history()) {
                 is Result.Success -> {

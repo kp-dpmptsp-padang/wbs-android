@@ -124,7 +124,7 @@ fun NotificationScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Tidak ada notifikasi",
+                        text = stringResource(R.string.no_data_notif),
                         textAlign = TextAlign.Center
                     )
                 }

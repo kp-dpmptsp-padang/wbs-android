@@ -20,6 +20,7 @@ class NotificationViewModel(private val repository: NotificationRepository) : Vi
 
     fun getNotification() {
         _loading.value = true
+        _error.value = ""
         viewModelScope.launch {
             when (val result = repository.notification()) {
                 is Result.Success -> {

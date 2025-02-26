@@ -80,5 +80,7 @@
     <string name="lapor_anonim">Lapor sebagai Anonim</string>
     <string name="form2">Rincian dan Lampiran</string>
     <string name="mark_as_read">Tandai sudah dibaca</string>
+    <string name="no_data_history">Tidak ada riwayat laporan</string>
+    <string name="no_data_notif">Tidak ada notifikasi</string>
 
 </resources>

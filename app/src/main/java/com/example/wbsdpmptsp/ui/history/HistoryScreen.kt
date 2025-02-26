@@ -145,7 +145,7 @@ fun HistoryScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "Tidak ada riwayat laporan",
+                                text = stringResource(R.string.no_data_history),
                                 textAlign = TextAlign.Center
                             )
                         }
