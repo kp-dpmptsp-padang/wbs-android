@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -22,28 +22,16 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.wbsdpmptsp.R
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
-fun parseDate(dateString: String): LocalDateTime {
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    return LocalDateTime.parse(dateString, formatter)
-}
-
-fun formatDate(date: LocalDateTime): String {
-    val formatter = DateTimeFormatter.ofPattern("dd MMM yyyy")
-    return date.format(formatter)
-}
 
 @Composable
-fun HistoryCard(
+fun NotifCard(
     name: String,
     description: String,
     date: String,
+    isRead: Boolean,
     onInfoClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     val parsedDate = parseDate(date)
     val formattedDate = formatDate(parsedDate)
 
@@ -53,8 +41,8 @@ fun HistoryCard(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         border = BorderStroke(1.dp, color = Color.LightGray),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        ) {
-        Row (
+    ) {
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
@@ -82,14 +70,16 @@ fun HistoryCard(
                 )
             }
 
-            IconButton(onClick = onInfoClick) {
-                Icon(
-                    imageVector = Icons.Default.Info,
-                    contentDescription = "Info",
-                    tint = colorResource(id = R.color.bluePrimary),
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                )
+            if (!isRead) {
+                IconButton(onClick = onInfoClick) {
+                    Icon(
+                        imageVector = Icons.Default.CheckCircle,
+                        contentDescription = "Read",
+                        tint = colorResource(id = R.color.bluePrimary),
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                    )
+                }
             }
         }
     }

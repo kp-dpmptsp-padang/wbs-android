@@ -19,7 +19,7 @@ import androidx.navigation.NavHostController
 import com.example.wbsdpmptsp.ui.component.BottomNav
 
 @Composable
-fun ReportScreen(modifier: Modifier = Modifier, navController: NavHostController) {
+fun ReportScreen(navController: NavHostController) {
     var currentStep by remember { mutableIntStateOf(0) }
     var judul by remember { mutableStateOf("") }
     var pelanggaran by remember { mutableStateOf("") }

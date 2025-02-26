@@ -4,30 +4,38 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.wbsdpmptsp.di.Injection
+import com.example.wbsdpmptsp.repository.HistoryRepository
+import com.example.wbsdpmptsp.repository.NotificationRepository
 import com.example.wbsdpmptsp.repository.UserRepository
 import com.example.wbsdpmptsp.ui.auth.login.LoginViewModel
 import com.example.wbsdpmptsp.ui.auth.register.RegisterViewModel
 import com.example.wbsdpmptsp.ui.history.HistoryViewModel
+import com.example.wbsdpmptsp.ui.notification.NotificationViewModel
 import com.example.wbsdpmptsp.ui.profile.ProfileViewModel
 
 class ViewModelFactory private constructor(
-    private val repository: UserRepository
+    private val userRepo: UserRepository,
+    private val historyRepo: HistoryRepository,
+    private val notifRepo: NotificationRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
-                RegisterViewModel(repository) as T
+                RegisterViewModel(userRepo) as T
             }
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
-                LoginViewModel(repository) as T
+                LoginViewModel(userRepo) as T
             }
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
-                ProfileViewModel(repository) as T
+                ProfileViewModel(userRepo) as T
             }
             modelClass.isAssignableFrom(HistoryViewModel::class.java) -> {
-                HistoryViewModel(repository) as T
+                HistoryViewModel(historyRepo) as T
+            }
+            modelClass.isAssignableFrom(NotificationViewModel::class.java) -> {
+                NotificationViewModel(notifRepo) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
@@ -40,7 +48,9 @@ class ViewModelFactory private constructor(
         fun getInstance(context: Context): ViewModelFactory =
             instance ?: synchronized(this) {
                 instance ?: ViewModelFactory(
-                    Injection.provideRepository(context)
+                    Injection.provideUserRepository(context),
+                    Injection.provideHistoryRepository(context),
+                    Injection.provideNotificationRepository(context)
                 )
             }.also { instance = it }
     }

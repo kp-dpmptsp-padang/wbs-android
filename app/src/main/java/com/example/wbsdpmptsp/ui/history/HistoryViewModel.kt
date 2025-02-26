@@ -5,11 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wbsdpmptsp.data.remote.response.DataItem
-import com.example.wbsdpmptsp.repository.UserRepository
+import com.example.wbsdpmptsp.repository.HistoryRepository
 import com.example.wbsdpmptsp.utils.Result
 import kotlinx.coroutines.launch
 
-class HistoryViewModel(private val repository: UserRepository) : ViewModel() {
+class HistoryViewModel(private val repository: HistoryRepository) : ViewModel() {
     private val _history = MutableLiveData<List<DataItem?>?>()
     val history: LiveData<List<DataItem?>?> = _history
 
@@ -30,7 +30,7 @@ class HistoryViewModel(private val repository: UserRepository) : ViewModel() {
                     _error.value = result.error
                 }
                 Result.Loading -> {
-                    // Handle loading state if needed
+                    _loading.value = true
                 }
             }
             _loading.value = false
