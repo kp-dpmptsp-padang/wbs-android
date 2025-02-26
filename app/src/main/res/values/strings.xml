@@ -74,6 +74,7 @@
     <string name="tanggal">Tanggal Kejadian</string>
     <string name="pihakTerlibat">Nama Pihak yang Terlibat</string>
     <string name="next">Selanjutnya</string>
+    <string name="kirim_laporan">Kirim</string>
 
     <string name="rincian_kejadian">Rincian Kejadian</string>
     <string name="bukti_pelanggaran">Unggah Lampiran Bukti</string>
@@ -82,5 +83,8 @@
     <string name="mark_as_read">Tandai sudah dibaca</string>
     <string name="no_data_history">Tidak ada riwayat laporan</string>
     <string name="no_data_notif">Tidak ada notifikasi</string>
+    <string name="form3">Rincian Laporan</string>
+    <string name="ya">Ya</string>
+    <string name="tidak">Tidak</string>
 
 </resources>

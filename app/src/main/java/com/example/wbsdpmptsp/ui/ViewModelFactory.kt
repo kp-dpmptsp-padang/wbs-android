@@ -6,17 +6,20 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.wbsdpmptsp.di.Injection
 import com.example.wbsdpmptsp.repository.HistoryRepository
 import com.example.wbsdpmptsp.repository.NotificationRepository
+import com.example.wbsdpmptsp.repository.ReportRepository
 import com.example.wbsdpmptsp.repository.UserRepository
 import com.example.wbsdpmptsp.ui.auth.login.LoginViewModel
 import com.example.wbsdpmptsp.ui.auth.register.RegisterViewModel
 import com.example.wbsdpmptsp.ui.history.HistoryViewModel
 import com.example.wbsdpmptsp.ui.notification.NotificationViewModel
 import com.example.wbsdpmptsp.ui.profile.ProfileViewModel
+import com.example.wbsdpmptsp.ui.report.ReportViewModel
 
 class ViewModelFactory private constructor(
     private val userRepo: UserRepository,
     private val historyRepo: HistoryRepository,
-    private val notifRepo: NotificationRepository
+    private val notifRepo: NotificationRepository,
+    private val reportRepo: ReportRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -37,6 +40,9 @@ class ViewModelFactory private constructor(
             modelClass.isAssignableFrom(NotificationViewModel::class.java) -> {
                 NotificationViewModel(notifRepo) as T
             }
+            modelClass.isAssignableFrom(ReportViewModel::class.java) -> {
+                ReportViewModel(reportRepo) as T
+            }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }
@@ -50,7 +56,8 @@ class ViewModelFactory private constructor(
                 instance ?: ViewModelFactory(
                     Injection.provideUserRepository(context),
                     Injection.provideHistoryRepository(context),
-                    Injection.provideNotificationRepository(context)
+                    Injection.provideNotificationRepository(context),
+                    Injection.provideReportRepository(context)
                 )
             }.also { instance = it }
     }

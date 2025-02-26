@@ -3,12 +3,14 @@ package com.example.wbsdpmptsp.data.remote.retro
 import com.example.wbsdpmptsp.data.remote.request.LoginRequest
 import com.example.wbsdpmptsp.data.remote.request.LogoutRequest
 import com.example.wbsdpmptsp.data.remote.request.RegisterRequest
+import com.example.wbsdpmptsp.data.remote.request.ReportRequest
 import com.example.wbsdpmptsp.data.remote.response.AuthResponse
 import com.example.wbsdpmptsp.data.remote.response.HistoryResponse
 import com.example.wbsdpmptsp.data.remote.response.MessageResponse
 import com.example.wbsdpmptsp.data.remote.response.NotificationResponse
 import com.example.wbsdpmptsp.data.remote.response.ProfileResponse
 import com.example.wbsdpmptsp.data.remote.response.RefreshTokenRequest
+import com.example.wbsdpmptsp.data.remote.response.ReportResponse
 import com.example.wbsdpmptsp.data.remote.response.TokenResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -65,4 +67,10 @@ interface ApiService {
         @Header("Authorization") authHeader: String,
         @Path("id") id: Int
     ): Response<MessageResponse>
+
+    @POST("reports")
+    suspend fun createReport(
+        @Header("Authorization") authHeader: String,
+        @Body request: ReportRequest
+    ): Response<ReportResponse>
 }
