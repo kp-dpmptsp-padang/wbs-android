@@ -79,5 +79,6 @@
     <string name="bukti_pelanggaran">Unggah Lampiran Bukti</string>
     <string name="lapor_anonim">Lapor sebagai Anonim</string>
     <string name="form2">Rincian dan Lampiran</string>
+    <string name="mark_as_read">Tandai sudah dibaca</string>
 
 </resources>

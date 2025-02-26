@@ -6,12 +6,17 @@ import com.example.wbsdpmptsp.data.remote.request.RegisterRequest
 import com.example.wbsdpmptsp.data.remote.response.AuthResponse
 import com.example.wbsdpmptsp.data.remote.response.HistoryResponse
 import com.example.wbsdpmptsp.data.remote.response.MessageResponse
+import com.example.wbsdpmptsp.data.remote.response.NotificationResponse
 import com.example.wbsdpmptsp.data.remote.response.ProfileResponse
+import com.example.wbsdpmptsp.data.remote.response.RefreshTokenRequest
+import com.example.wbsdpmptsp.data.remote.response.TokenResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
 
 interface ApiService {
     @POST("auth/login")
@@ -35,8 +40,29 @@ interface ApiService {
         @Header("Authorization") authHeader: String
     ): Response<ProfileResponse>
 
+    @POST("auth/token")
+    suspend fun refreshToken(
+        @Body request: RefreshTokenRequest
+    ): Response<TokenResponse>
+
     @GET("reports/history")
     suspend fun history(
         @Header("Authorization") authHeader: String
     ): Response<HistoryResponse>
+
+    @GET("notifications")
+    suspend fun notification(
+        @Header("Authorization") authHeader: String
+    ): Response<NotificationResponse>
+
+    @PUT("notifications/read-all")
+    suspend fun readAllNotification(
+        @Header("Authorization") authHeader: String
+    ): Response<MessageResponse>
+
+    @PUT("notifications/{id}/read")
+    suspend fun readNotification(
+        @Header("Authorization") authHeader: String,
+        @Path("id") id: Int
+    ): Response<MessageResponse>
 }

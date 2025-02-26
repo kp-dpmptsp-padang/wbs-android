@@ -1,14 +1,13 @@
 package com.example.wbsdpmptsp.data.local
 
 import android.content.Context
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.wbsdpmptsp.data.remote.response.AuthResponse
-import com.example.wbsdpmptsp.data.remote.response.User
+import com.example.wbsdpmptsp.data.remote.response.TokenResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -33,13 +32,10 @@ class UserPreference(private val context: Context) {
         }
     }
 
-    fun getUser(): Flow<User?> = context.dataStore.data.map { preferences ->
-        User(
-            role = preferences[userRoleKey] ?: "",
-            name = preferences[userNameKey] ?: "",
-            id = preferences[userIdKey]?.toIntOrNull(),
-            email = preferences[userEmailKey] ?: ""
-        )
+    suspend fun saveAccessToken(response: TokenResponse) {
+        context.dataStore.edit { preferences ->
+            preferences[accessTokenKey] = response.data?.accessToken ?: ""
+        }
     }
 
     fun getAccessToken(): Flow<String?> = context.dataStore.data.map { preferences ->

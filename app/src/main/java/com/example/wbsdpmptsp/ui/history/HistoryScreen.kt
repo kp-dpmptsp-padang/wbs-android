@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -28,11 +29,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun HistoryScreen(
-    modifier: Modifier = Modifier,
     navController: NavHostController,
     viewModel: HistoryViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
 ) {
-    val context = LocalContext.current
     val tabsPosition = listOf("Menunggu", "Diproses", "Ditolak", "Selesai")
     val pagerState = rememberPagerState(pageCount = { tabsPosition.size })
     val coroutineScope = rememberCoroutineScope()
@@ -87,26 +86,88 @@ fun HistoryScreen(
                 }
             }
 
-            HorizontalPager(
-                state = pagerState,
-                modifier = Modifier.weight(1f)
-            ) { page ->
-                LazyColumn(
+            if (loading) {
+                Box(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(bottom = 32.dp),
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    items(history?.size ?: 0) { index ->
-                        val item = history?.get(index)
-                        item?.let {
-                            HistoryCard(
-                                name = it.title ?: "Unknown",
-                                description = it.detail ?: "No details",
-                                date = it.date ?: "Unknown",
-                                onInfoClick = {  }
+                    CircularProgressIndicator()
+                }
+            } else if (error.isNotEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = error,
+                            color = Color.Red,
+                            textAlign = TextAlign.Center
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Button(
+                            onClick = {
+                                val status = when (tabsPosition[pagerState.currentPage]) {
+                                    "Menunggu" -> "menunggu-verifikasi"
+                                    "Diproses" -> "diproses"
+                                    "Ditolak" -> "ditolak"
+                                    "Selesai" -> "selesai"
+                                    else -> ""
+                                }
+                                viewModel.getHistory(status)
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = primaryBlue)
+                        ) {
+                            Text("Refresh")
+                        }
+                    }
+                }
+            } else {
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier.weight(1f)
+                ) { page ->
+                    if (history.isNullOrEmpty()) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Tidak ada riwayat laporan",
+                                textAlign = TextAlign.Center
                             )
+                        }
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(bottom = 32.dp),
+                            contentPadding = PaddingValues(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            items(history!!.size) { index ->
+                                val item = history!![index]
+                                item?.let {
+                                    HistoryCard(
+                                        name = it.title ?: "Unknown",
+                                        description = it.detail ?: "No details",
+                                        date = it.date ?: "Unknown",
+                                        onInfoClick = { }
+                                    )
+                                }
+                            }
                         }
                     }
                 }
