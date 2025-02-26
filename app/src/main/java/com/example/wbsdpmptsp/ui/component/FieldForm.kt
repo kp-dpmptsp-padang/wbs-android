@@ -2,8 +2,14 @@ package com.example.wbsdpmptsp.ui.component
 
 import android.app.DatePickerDialog
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -115,3 +121,37 @@ fun CustomDatePicker(
     )
 }
 
+@Composable
+fun SummaryItem(
+    label: String,
+    value: String,
+    isMultiline: Boolean = false,
+    isFile: Boolean = false,
+    onFilePreview: (() -> Unit)? = null
+) {
+    Column(modifier = Modifier.padding(vertical = 4.dp)) {
+        Text(text = label, style = MaterialTheme.typography.bodySmall)
+        OutlinedTextField(
+            value = value,
+            onValueChange = {},
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = !isMultiline,
+            readOnly = true,
+            trailingIcon = if (isFile && onFilePreview != null) {
+                {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = "Preview File",
+                        modifier = Modifier.clickable { onFilePreview() }
+                    )
+                }
+            } else null,
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedBorderColor = Color.Gray,
+                focusedBorderColor = Color(0x801A237E)
+            ),
+            shape = RoundedCornerShape(10.dp),
+            maxLines = if (isMultiline) 5 else 1
+        )
+    }
+}

@@ -5,6 +5,7 @@ import com.example.wbsdpmptsp.data.local.UserPreference
 import com.example.wbsdpmptsp.data.remote.retro.ApiConfig
 import com.example.wbsdpmptsp.repository.HistoryRepository
 import com.example.wbsdpmptsp.repository.NotificationRepository
+import com.example.wbsdpmptsp.repository.ReportRepository
 import com.example.wbsdpmptsp.repository.UserRepository
 
 object Injection {
@@ -25,4 +26,12 @@ object Injection {
         val userPreference = UserPreference(context)
         return NotificationRepository.getInstance(apiService, userPreference)
     }
+
+    fun provideReportRepository(context: Context): ReportRepository {
+        val apiService = ApiConfig.createApiService(context)
+        val userPreference = UserPreference(context)
+        return ReportRepository.getInstance(apiService, userPreference)
+    }
+
+
 }
