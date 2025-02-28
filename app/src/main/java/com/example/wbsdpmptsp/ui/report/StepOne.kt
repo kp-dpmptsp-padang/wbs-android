@@ -1,7 +1,5 @@
 package com.example.wbsdpmptsp.ui.report
 
-import android.R.attr.enabled
-import android.R.attr.onClick
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -44,24 +42,46 @@ fun StepOne(
                 .align(Alignment.End),
             backgroundColor = Color(0xFF4A90E2)
         )
-        CustomTextField(value = judul, onValueChange = onJudulChange, stringResource(R
-            .string.judul))
+        CustomTextField(
+            value = judul,
+            onValueChange = onJudulChange,
+            stringResource(R.string.judul),
+            isRequired = true
+        )
         Spacer(modifier = Modifier.height(10.dp))
-        CustomTextField(value = pelanggaran, onValueChange = onPelanggaranChange, label = stringResource(R
-            .string.pelanggaran))
+
+        CustomTextField(
+            value = pelanggaran,
+            onValueChange = onPelanggaranChange,
+            label = stringResource(R.string.pelanggaran),
+            isRequired = true
+        )
         Spacer(modifier = Modifier.height(10.dp))
-        CustomTextField(value = lokasi, onValueChange = onLokasiChange, label = stringResource(R
-            .string.lokasi))
+
+        CustomTextField(
+            value = lokasi,
+            onValueChange = onLokasiChange,
+            label = stringResource(R.string.lokasi),
+            isRequired = true
+        )
         Spacer(modifier = Modifier.height(10.dp))
+
         CustomDatePicker(
             value = tanggal,
             onValueChange = onTanggalChange,
-            label = stringResource(R.string.tanggal)
+            label = stringResource(R.string.tanggal),
+            isRequired = true
         )
         Spacer(modifier = Modifier.height(10.dp))
-        CustomTextField(value = pihakTerlibat, onValueChange = onPihakTerlibatChange, label = stringResource(R
-            .string.pihakTerlibat))
+
+        CustomTextField(
+            value = pihakTerlibat,
+            onValueChange = onPihakTerlibatChange,
+            label = stringResource(R.string.pihakTerlibat),
+            isRequired = true
+        )
         Spacer(modifier = Modifier.height(14.dp))
+
         CustomButton(
             text = stringResource(R.string.next),
             onClick = onNext,

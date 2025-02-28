@@ -1,30 +1,32 @@
 package com.example.wbsdpmptsp.ui.report
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.wbsdpmptsp.data.remote.request.ReportRequest
 import com.example.wbsdpmptsp.ui.ViewModelFactory
 import com.example.wbsdpmptsp.ui.component.BottomNav
+import com.example.wbsdpmptsp.ui.component.ErrorDialog
 import com.example.wbsdpmptsp.utils.Result
+import kotlinx.coroutines.launch
 
 @Composable
 fun ReportScreen(
@@ -40,9 +42,42 @@ fun ReportScreen(
     var pihakTerlibat by remember { mutableStateOf("") }
     var rincianKejadian by remember { mutableStateOf("") }
     var isAnonymous by remember { mutableStateOf(false) }
-    var uploadedFileName by remember { mutableStateOf<String?>(null) }
 
     val reportResult by viewModel.reportResult.observeAsState()
+
+    var showErrorDialog by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
+
+    val context = LocalContext.current
+    var selectedFileUri by remember { mutableStateOf<Uri?>(null) }
+    var selectedFileName by remember { mutableStateOf("") }
+    val pickFile = rememberFilePicker { uri ->
+        selectedFileUri = uri
+        selectedFileName = uri?.let { getFileName(context, it) } ?: ""
+    }
+    val coroutineScope = rememberCoroutineScope()
+
+    val handlePreviewFile = {
+        if (selectedFileUri != null) {
+            if (selectedFileName.lowercase().endsWith(".pdf")) {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    setDataAndType(selectedFileUri, "application/pdf")
+                    flags = Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_GRANT_READ_URI_PERMISSION
+                }
+
+                try {
+                    context.startActivity(intent)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    coroutineScope.launch {
+                        showErrorDialog = true
+                        errorMessage = "No PDF viewer found"
+                    }
+                }
+            }
+        }
+    }
+
 
     Box(
         modifier = Modifier
@@ -68,8 +103,10 @@ fun ReportScreen(
                 onRincianKejadianChange = { rincianKejadian = it },
                 isAnonymous = isAnonymous,
                 onAnonymousChange = { isAnonymous = it },
-                uploadedFileName = uploadedFileName ?: "",
-                onUploadFile = {  },
+                fileUri = selectedFileUri,
+                uploadedFileName = selectedFileName,
+                onUploadFile = pickFile,
+                onPreviewFile = handlePreviewFile,
                 onBack = { currentStep-- },
                 onNext = { currentStep++ }
             )
@@ -81,10 +118,13 @@ fun ReportScreen(
                 pihakTerlibat = pihakTerlibat,
                 rincianKejadian = rincianKejadian,
                 isAnonymous = isAnonymous,
-                uploadedFileName = uploadedFileName,
+                uploadedFileName = selectedFileName,
+                fileUri = selectedFileUri,
+                onPreviewFile = handlePreviewFile,
                 onBack = { currentStep-- },
                 onSubmit = {
-                    val reportRequest = ReportRequest(
+                    viewModel.createReport(
+                        context,
                         title = judul,
                         violation = pelanggaran,
                         location = lokasi,
@@ -92,9 +132,8 @@ fun ReportScreen(
                         actors = pihakTerlibat,
                         detail = rincianKejadian,
                         isAnonymous = isAnonymous,
-                        evidence = uploadedFileName
+                        fileUri = selectedFileUri
                     )
-                    viewModel.createReport(reportRequest)
                 }
             )
         }
@@ -112,22 +151,42 @@ fun ReportScreen(
     reportResult?.let { result ->
         when (result) {
             is Result.Loading -> {
-                CircularProgressIndicator()
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
             }
             is Result.Success -> {
-                navController.navigate("home")
+                val uniqueCode = result.data.data?.uniqueCode ?: ""
+                navController.navigate(if (isAnonymous) "success_anonim/$uniqueCode" else
+                    "success") {
+                    popUpTo("report") { inclusive = true }
+                }
             }
             is Result.Error -> {
-                Text(
-                    text = result.error,
-                    color = Color.Red,
-                    textAlign = TextAlign.Center
-                )
+                if (!showErrorDialog) {
+                    errorMessage = result.error
+                    showErrorDialog = true
+                }
+            }
+            is Result.Empty -> {
+
             }
         }
     }
-}
 
+    if (showErrorDialog) {
+        ErrorDialog(
+            message = errorMessage,
+            onDismiss = {
+                showErrorDialog = false
+                viewModel.resetReportResult()
+            }
+        )
+    }
+}
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

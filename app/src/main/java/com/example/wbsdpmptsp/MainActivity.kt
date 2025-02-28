@@ -19,6 +19,8 @@ import com.example.wbsdpmptsp.ui.home.HomeScreen
 import com.example.wbsdpmptsp.ui.notification.NotificationScreen
 import com.example.wbsdpmptsp.ui.profile.ProfileScreen
 import com.example.wbsdpmptsp.ui.report.ReportScreen
+import com.example.wbsdpmptsp.ui.report.success.SuccessAnonimScreen
+import com.example.wbsdpmptsp.ui.report.success.SuccessScreen
 import com.example.wbsdpmptsp.ui.theme.WBSDPMPTSPTheme
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -55,6 +57,12 @@ class MainActivity : ComponentActivity() {
                             composable("report") { ReportScreen(navController = navController) }
                             composable("notification") { NotificationScreen(navController = navController) }
                             composable("profile") { ProfileScreen(navController = navController) }
+                            composable("success") { SuccessScreen(navController = navController) }
+                            composable("success_anonim/{uniqueCode}") { backStackEntry ->
+                                val uniqueCode = backStackEntry.arguments?.getString("uniqueCode") ?: ""
+                                SuccessAnonimScreen(navController, uniqueCode)
+                            }
+
                         }
                     }
                 }

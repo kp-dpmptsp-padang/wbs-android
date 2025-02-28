@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -23,7 +24,8 @@ fun CustomButton(
     backgroundColor: Color = Color(0xFF1A237E),
     textColor: Color = Color.White,
     shape: Shape = RoundedCornerShape(80.dp),
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    textStyle: TextStyle = TextStyle(fontSize = 14.sp)
     ) {
     Button(
         onClick = onClick,
@@ -32,6 +34,6 @@ fun CustomButton(
         colors = ButtonDefaults.buttonColors(containerColor = backgroundColor),
         enabled = enabled
     ) {
-        Text(text = text, fontSize = 14.sp, color = textColor)
+        Text(text = text, style = textStyle, color = textColor)
     }
 }

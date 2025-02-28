@@ -29,6 +29,7 @@
     <string name="profile">Profile</string>
     <string name="account_info">Informasi Akun</string>
     <string name="report_history">Riwayat Pelaporan</string>
+    <string name="report">Riwayat Laporan</string>
     <string name="track_anonymous_report">Lacak Laporan Anonim</string>
     <string name="track_here">Melapor secara Anonim? Klik disini</string>
     <string name="report_total">Jumlah Laporan Dibuat</string>
@@ -78,6 +79,7 @@
 
     <string name="rincian_kejadian">Rincian Kejadian</string>
     <string name="bukti_pelanggaran">Unggah Lampiran Bukti</string>
+    <string name="bukti">Lampiran Bukti</string>
     <string name="lapor_anonim">Lapor sebagai Anonim</string>
     <string name="form2">Rincian dan Lampiran</string>
     <string name="mark_as_read">Tandai sudah dibaca</string>
@@ -86,5 +88,16 @@
     <string name="form3">Rincian Laporan</string>
     <string name="ya">Ya</string>
     <string name="tidak">Tidak</string>
+    <string name="thanks">Terima kasih telah melaporkan. Laporan Anda telah diterima dan akan segera diverifikasi oleh tim kami.</string>
+    <string name="beranda">Beranda</string>
+    <string name="anonim_success">Mohon disimpan kode unik berikut agar Anda bisa melakukan tracking laporan nantinya karena laporan Anonim tidak akan ada di Riwayat Laporan</string>
+    <string name="success">Laporan Anda berhasil dibuat!</string>
+    <string name="copy_code">Kode berhasil disalin!</string>
+    <string name="salin_kode">Salin Kode</string>
 
+    <string name="error_title">Terjadi Kesalahan</string>
+    <string name="tap_to_preview">Klik untuk Lihat</string>
+    <string name="image_preview">Image preview</string>
+    <string name="tap_to_change_file">Ganti File?</string>
+    <string name="preview_pdf">Lihat File</string>
 </resources>

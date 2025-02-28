@@ -161,7 +161,7 @@ fun LoginScreen(modifier: Modifier = Modifier, navController: NavHostController,
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
     LoginScreen(navController = NavHostController(LocalContext.current))
