@@ -100,4 +100,22 @@
     <string name="image_preview">Image preview</string>
     <string name="tap_to_change_file">Ganti File?</string>
     <string name="preview_pdf">Lihat File</string>
+
+    <string name="help">Pusat Bantuan</string>
+    <string name="faq_1">Bagaimana cara melaporkan pelanggaran?</string>
+    <string name="explanation_1">Untuk melaporkan pelanggaran, pilih menu \'Laporkan\' di halaman utama, kemudian isi formulir yang tersedia dengan detail pelanggaran yang Anda temukan. Anda juga dapat melampirkan bukti berupa foto atau dokumen PDF.</string>
+    <string name="faq_2">Apakah saya bisa melaporkan secara anonim?</string>
+    <string name="explanation_2">Ya, Anda dapat melaporkan secara anonim dengan mencentang pilihan \'Lapor Anonim\' pada formulir pelaporan. Identitas Anda tidak akan diungkapkan dalam laporan yang diajukan.</string>
+    <string name="faq_3">Berapa lama laporan saya akan diproses?</string>
+    <string name="explanation_3">Laporan akan diproses dalam waktu 3–5 hari kerja. Anda akan mendapatkan notifikasi mengenai status laporan Anda melalui aplikasi atau email yang telah Anda daftarkan.</string>
+    <string name="faq_4">Jenis file apa yang dapat saya lampirkan sebagai bukti?</string>
+    <string name="explanation_4">Anda dapat melampirkan bukti dalam format gambar (JPG, JPEG, PNG) atau dokumen PDF. Ukuran file maksimal adalah 5MB.</string>
+    <string name="faq_5">Bagaimana cara melihat status laporan saya?</string>
+    <string name="explanation_5">Untuk melihat status laporan, buka menu \'Riwayat Laporan\' di aplikasi. Di sana Anda dapat melihat semua laporan yang telah Anda ajukan beserta statusnya saat ini.</string>
+    <string name="faq_6">Apa yang harus saya lakukan jika laporan saya ditolak?</string>
+    <string name="explanation_6">Jika laporan Anda ditolak, Anda akan menerima notifikasi dengan alasan penolakan. Anda dapat mengajukan laporan baru dengan memperhatikan masukan yang diberikan atau menghubungi layanan pelanggan untuk informasi lebih lanjut.</string>
+
+    <string name="about">Tentang Aplikasi WBS DPMPTSP</string>
+    <string name="version">v 1.0</string>
+    <string name="explain_ver">Aplikasi CLEAR adalah platform pelaporan untuk DPMPTSP Kota Padang yang memungkinkan masyarakat melaporkan tindakan kriminal, korupsi, nepotisme, suap, atau penyalahgunaan wewenang. Dengan fitur pelaporan anonim, aplikasi ini memastikan keamanan dan kenyamanan pelapor dalam menjaga transparansi dan akuntabilitas.</string>
 </resources>

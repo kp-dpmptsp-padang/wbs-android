@@ -5,6 +5,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,164 +51,174 @@ fun ProfileScreen(
         else -> null
     }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.White)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
     ) {
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(32.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                painter = painterResource(R.drawable.ic_user_profile),
-                contentDescription = stringResource(R.string.profile),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp)
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            InfoSection(
-                title = stringResource(R.string.account_info),
-                items = listOf(
-                    Triple(R.drawable.ic_name, stringResource(R.string.name), userData?.name ?: ""),
-                    Triple(R.drawable.ic_email, stringResource(R.string.email), userData?.email ?: "")
-                )
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            InfoSection(
-                title = stringResource(R.string.report_history),
-                items = listOf(
-                    Triple(R.drawable.ic_history_profile, stringResource(R.string.report_total),
-                        userData?.reportCount.toString()
-                    )
-                ),
-                onItemClick = {
-                    navController.navigate("history")
-                }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            InfoSection(
-                items = listOf(
-                    Triple(R.drawable.ic_anonym, stringResource(R.string.track_anonymous_report), stringResource(R
-                        .string.track_here))
-                ),
-                backgroundColor = colorResource(R.color.bluePrimary),
-                textColor = Color.White,
-                subtextColor = Color.White,
-                onItemClick = {
-                    navController.navigate("track_anonym")
-                }
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { navController.navigate("faq") }
-                    .padding(vertical = 8.dp)
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_faq),
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Column {
-                    Text(
-                        text = stringResource(R.string.faq),
-                        fontSize = 14.sp,
-                        color = primaryBlue
-                    )
-                    Text(
-                        text = stringResource(R.string.faq_text),
-                        fontSize = 12.sp,
-                        color = secondaryBlue
-                    )
-                }
-            }
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { navController.navigate("about") }
-                    .padding(vertical = 8.dp)
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_about),
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Column {
-                    Text(
-                        text = stringResource(R.string.about_us),
-                        fontSize = 14.sp,
-                        color = primaryBlue
-                    )
-                    Text(
-                        text = stringResource(R.string.about_us_text),
-                        fontSize = 12.sp,
-                        color = secondaryBlue
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            LaunchedEffect(logoutResult) {
-                logoutResult?.let { result ->
-                    when (result) {
-                        is Result.Success<MessageResponse> -> {
-                            Toast.makeText(context, context.getString(R.string.logout_success), Toast.LENGTH_SHORT).show()
-                            navController.navigate("login") {
-                                popUpTo("profile") { inclusive = true }
-                            }
-                        }
-                        is Result.Error -> {
-                            Toast.makeText(context, result.error, Toast.LENGTH_SHORT).show()
-                        }
-                        else -> {}
-                    }
-                }
-            }
-
-            LaunchedEffect(profileResult) {
-                when (profileResult) {
-                    is Result.Error -> {
-                        Toast.makeText(context, profileResult.error, Toast.LENGTH_SHORT).show()
-                    }
-                    else -> {}
-                }
-            }
-
-            Image(
-                painter = painterResource(R.drawable.ic_logout),
-                contentDescription = stringResource(R.string.logout),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .size(35.dp)
-                    .clickable {
-                        viewModel.logout()
-                    }
-            )
-        }
-
         if (isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-        }
+        } else if (profileResult is Result.Error) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = profileResult.error,
+                    color = Color.Red,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(
+                    onClick = { viewModel.fetchProfile() },
+                    colors = ButtonDefaults.buttonColors(containerColor = primaryBlue)
+                ) {
+                    Text("Refresh")
+                }
+            }
+        } else {
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.ic_user_profile),
+                    contentDescription = stringResource(R.string.profile),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(150.dp)
+                )
 
-        Spacer(modifier = Modifier.height(64.dp))
+                Spacer(modifier = Modifier.height(12.dp))
+
+                InfoSection(
+                    title = stringResource(R.string.account_info),
+                    items = listOf(
+                        Triple(R.drawable.ic_name, stringResource(R.string.name), userData?.name ?: ""),
+                        Triple(R.drawable.ic_email, stringResource(R.string.email), userData?.email ?: "")
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                InfoSection(
+                    title = stringResource(R.string.report_history),
+                    items = listOf(
+                        Triple(R.drawable.ic_history_profile, stringResource(R.string.report_total),
+                            userData?.reportCount.toString()
+                        )
+                    ),
+                    onItemClick = {
+                        navController.navigate("history")
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                InfoSection(
+                    items = listOf(
+                        Triple(R.drawable.ic_anonym, stringResource(R.string.track_anonymous_report), stringResource(R.string.track_here))
+                    ),
+                    backgroundColor = colorResource(R.color.bluePrimary),
+                    textColor = Color.White,
+                    subtextColor = Color.White,
+                    onItemClick = {
+                        navController.navigate("track_anonym")
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { navController.navigate("faq") }
+                        .padding(vertical = 8.dp)
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.ic_faq),
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Column {
+                        Text(
+                            text = stringResource(R.string.faq),
+                            fontSize = 14.sp,
+                            color = primaryBlue
+                        )
+                        Text(
+                            text = stringResource(R.string.faq_text),
+                            fontSize = 12.sp,
+                            color = secondaryBlue
+                        )
+                    }
+                }
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { navController.navigate("about") }
+                        .padding(vertical = 8.dp)
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.ic_about),
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Column {
+                        Text(
+                            text = stringResource(R.string.about_us),
+                            fontSize = 14.sp,
+                            color = primaryBlue
+                        )
+                        Text(
+                            text = stringResource(R.string.about_us_text),
+                            fontSize = 12.sp,
+                            color = secondaryBlue
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                LaunchedEffect(logoutResult) {
+                    logoutResult?.let { result ->
+                        when (result) {
+                            is Result.Success<MessageResponse> -> {
+                                Toast.makeText(context, context.getString(R.string.logout_success), Toast.LENGTH_SHORT).show()
+                                navController.navigate("login") {
+                                    popUpTo("profile") { inclusive = true }
+                                }
+                            }
+                            is Result.Error -> {
+                                Toast.makeText(context, result.error, Toast.LENGTH_SHORT).show()
+                            }
+                            else -> {}
+                        }
+                    }
+                }
+
+                Image(
+                    painter = painterResource(R.drawable.ic_logout),
+                    contentDescription = stringResource(R.string.logout),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .size(35.dp)
+                        .clickable {
+                            viewModel.logout()
+                        }
+                )
+            }
+        }
 
         BottomNav(
             modifier = Modifier

@@ -12,8 +12,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.wbsdpmptsp.data.local.UserPreference
+import com.example.wbsdpmptsp.ui.about.AboutScreen
 import com.example.wbsdpmptsp.ui.auth.login.LoginScreen
 import com.example.wbsdpmptsp.ui.auth.register.RegisterScreen
+import com.example.wbsdpmptsp.ui.faq.FaqScreen
 import com.example.wbsdpmptsp.ui.history.HistoryScreen
 import com.example.wbsdpmptsp.ui.home.HomeScreen
 import com.example.wbsdpmptsp.ui.notification.NotificationScreen
@@ -62,7 +64,8 @@ class MainActivity : ComponentActivity() {
                                 val uniqueCode = backStackEntry.arguments?.getString("uniqueCode") ?: ""
                                 SuccessAnonimScreen(navController, uniqueCode)
                             }
-
+                            composable("faq") { FaqScreen(onBack = { navController.popBackStack() }) }
+                            composable("about") { AboutScreen(onBack = { navController.popBackStack() }) }
                         }
                     }
                 }

@@ -26,7 +26,7 @@ class ProfileViewModel(private val repository: UserRepository) : ViewModel() {
         fetchProfile()
     }
 
-    private fun fetchProfile() {
+     fun fetchProfile() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
