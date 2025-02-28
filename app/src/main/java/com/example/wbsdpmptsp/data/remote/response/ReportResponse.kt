@@ -20,7 +20,7 @@ data class DataReport(
 	val title: String? = null,
 
 	@field:SerializedName("unique_code")
-	val uniqueCode: Any? = null,
+	val uniqueCode: String? = null,
 
 	@field:SerializedName("status")
 	val status: String? = null

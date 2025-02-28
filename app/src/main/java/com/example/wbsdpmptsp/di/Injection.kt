@@ -7,6 +7,7 @@ import com.example.wbsdpmptsp.repository.HistoryRepository
 import com.example.wbsdpmptsp.repository.NotificationRepository
 import com.example.wbsdpmptsp.repository.ReportRepository
 import com.example.wbsdpmptsp.repository.UserRepository
+import com.example.wbsdpmptsp.utils.TokenManager
 
 object Injection {
     fun provideUserRepository(context: Context): UserRepository {
@@ -30,7 +31,8 @@ object Injection {
     fun provideReportRepository(context: Context): ReportRepository {
         val apiService = ApiConfig.createApiService(context)
         val userPreference = UserPreference(context)
-        return ReportRepository.getInstance(apiService, userPreference)
+        val tokenManager = TokenManager(context, userPreference)
+        return ReportRepository.getInstance(apiService, userPreference, tokenManager)
     }
 
 

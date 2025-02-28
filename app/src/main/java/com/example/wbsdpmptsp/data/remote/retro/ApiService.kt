@@ -3,7 +3,6 @@ package com.example.wbsdpmptsp.data.remote.retro
 import com.example.wbsdpmptsp.data.remote.request.LoginRequest
 import com.example.wbsdpmptsp.data.remote.request.LogoutRequest
 import com.example.wbsdpmptsp.data.remote.request.RegisterRequest
-import com.example.wbsdpmptsp.data.remote.request.ReportRequest
 import com.example.wbsdpmptsp.data.remote.response.AuthResponse
 import com.example.wbsdpmptsp.data.remote.response.HistoryResponse
 import com.example.wbsdpmptsp.data.remote.response.MessageResponse
@@ -12,12 +11,16 @@ import com.example.wbsdpmptsp.data.remote.response.ProfileResponse
 import com.example.wbsdpmptsp.data.remote.response.RefreshTokenRequest
 import com.example.wbsdpmptsp.data.remote.response.ReportResponse
 import com.example.wbsdpmptsp.data.remote.response.TokenResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface ApiService {
@@ -68,9 +71,18 @@ interface ApiService {
         @Path("id") id: Int
     ): Response<MessageResponse>
 
+    @Multipart
     @POST("reports")
     suspend fun createReport(
         @Header("Authorization") authHeader: String,
-        @Body request: ReportRequest
+        @Part("title") title: RequestBody,
+        @Part("violation") violation: RequestBody,
+        @Part("location") location: RequestBody,
+        @Part("date") date: RequestBody,
+        @Part("actors") actors: RequestBody,
+        @Part("detail") detail: RequestBody,
+        @Part("is_anonymous") isAnonymous: RequestBody,
+        @Part evidence: MultipartBody.Part?
     ): Response<ReportResponse>
+
 }

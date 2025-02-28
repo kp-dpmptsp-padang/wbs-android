@@ -39,8 +39,10 @@ import com.example.wbsdpmptsp.ui.component.ExpandableCard
 import com.example.wbsdpmptsp.ui.theme.primaryBlue
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, navController: NavHostController) {
-    val context = LocalContext.current
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    navController: NavHostController
+) {
     val scrollState = rememberScrollState()
     Box(
         modifier = Modifier
@@ -163,12 +165,12 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavHostController) 
                     ) {
                         Text(
                             text = stringResource(R.string.anonymous),
-                            fontSize = 14.sp,
+                            fontSize = 16.sp,
                             color = Color.Red
                         )
                         Text(
                             text = stringResource(R.string.identity_secret),
-                            fontSize = 12.sp,
+                            fontSize = 14.sp,
                         )
                     }
                 }

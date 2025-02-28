@@ -1,8 +1,10 @@
 package com.example.wbsdpmptsp.ui.component
 
+import android.R.attr.label
 import android.app.DatePickerDialog
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,6 +31,7 @@ fun CustomTextField(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
+    isRequired: Boolean = false,
     modifier: Modifier = Modifier,
     isPassword: Boolean = false,
     maxLines: Int = 1
@@ -36,7 +39,14 @@ fun CustomTextField(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(label, color = Color.Black) },
+        label = {
+            Row {
+                Text(label, color = Color.Black)
+                if (isRequired) {
+                    Text("*", color = Color.Red)
+                }
+            }
+        },
         modifier = modifier.fillMaxWidth(),
         singleLine = true,
         visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
@@ -54,6 +64,7 @@ fun CustomTextAreaField(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
+    isRequired: Boolean = false,
     singleLine: Boolean = false,
     modifier: Modifier = Modifier,
     maxLines: Int = 1,
@@ -66,7 +77,14 @@ fun CustomTextAreaField(
                 onValueChange(newValue)
             }
         },
-        label = { Text(label, color = Color.Black) },
+        label = {
+            Row {
+                Text(label, color = Color.Black)
+                if (isRequired) {
+                    Text("*", color = Color.Red)
+                }
+            }
+        },
         modifier = modifier
             .fillMaxWidth(),
         singleLine = singleLine,
@@ -87,6 +105,7 @@ fun CustomDatePicker(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
+    isRequired: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -107,7 +126,14 @@ fun CustomDatePicker(
     OutlinedTextField(
         value = value,
         onValueChange = { },
-        label = { Text(label, color = Color.Black) },
+        label = {
+            Row {
+                Text(label, color = Color.Black)
+                if (isRequired) {
+                    Text("*", color = Color.Red)
+                }
+            }
+        },
         modifier = modifier
             .fillMaxWidth()
             .clickable { datePickerDialog.show() },
@@ -125,12 +151,18 @@ fun CustomDatePicker(
 fun SummaryItem(
     label: String,
     value: String,
+    isRequired: Boolean = false,
     isMultiline: Boolean = false,
     isFile: Boolean = false,
     onFilePreview: (() -> Unit)? = null
 ) {
     Column(modifier = Modifier.padding(vertical = 4.dp)) {
-        Text(text = label, style = MaterialTheme.typography.bodySmall)
+        Row {
+            Text(label, color = Color.Black)
+            if (isRequired) {
+                Text("*", color = Color.Red)
+            }
+        }
         OutlinedTextField(
             value = value,
             onValueChange = {},

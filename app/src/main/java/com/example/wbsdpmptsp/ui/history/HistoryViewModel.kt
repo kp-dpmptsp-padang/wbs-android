@@ -33,6 +33,9 @@ class HistoryViewModel(private val repository: HistoryRepository) : ViewModel() 
                 Result.Loading -> {
                     _loading.value = true
                 }
+                is Result.Empty -> {
+
+                }
             }
             _loading.value = false
         }

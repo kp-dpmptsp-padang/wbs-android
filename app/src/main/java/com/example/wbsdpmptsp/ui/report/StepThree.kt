@@ -1,18 +1,32 @@
 package com.example.wbsdpmptsp.ui.report
 
+import android.net.Uri
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.wbsdpmptsp.R
 import com.example.wbsdpmptsp.ui.component.CustomButton
 import com.example.wbsdpmptsp.ui.component.CustomTitle
@@ -27,13 +41,21 @@ fun StepThree(
     pihakTerlibat: String,
     rincianKejadian: String,
     isAnonymous: Boolean,
-    uploadedFileName: String?,
-    onPreviewFile: (() -> Unit)? = null,
+    uploadedFileName: String,
+    fileUri: Uri? = null,
     onBack: () -> Unit,
-    onSubmit: () -> Unit
+    onSubmit: () -> Unit,
+    onPreviewFile: (() -> Unit)? = null
 ) {
-    Column(modifier = Modifier.padding(24.dp)) {
-        Row{
+    val scrollState = rememberScrollState()
+    val context = LocalContext.current
+
+    Column(
+        modifier = Modifier
+            .padding(24.dp)
+            .verticalScroll(scrollState)
+    ) {
+        Row {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = null,
@@ -47,38 +69,105 @@ fun StepThree(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        SummaryItem(label = stringResource(R.string.judul), value = judul)
+        SummaryItem(label = stringResource(R.string.judul), value = judul, isRequired = true)
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        SummaryItem(label = stringResource(R.string.pelanggaran), value = pelanggaran)
+        SummaryItem(label = stringResource(R.string.pelanggaran), value = pelanggaran, isRequired = true)
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        SummaryItem(label = stringResource(R.string.lokasi), value = lokasi)
+        SummaryItem(label = stringResource(R.string.lokasi), value = lokasi, isRequired = true)
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        SummaryItem(label = stringResource(R.string.tanggal), value = tanggal)
+        SummaryItem(label = stringResource(R.string.tanggal), value = tanggal, isRequired = true)
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        SummaryItem(label = stringResource(R.string.pihakTerlibat), value = pihakTerlibat)
+        SummaryItem(label = stringResource(R.string.pihakTerlibat), value = pihakTerlibat, isRequired = true)
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        SummaryItem(label = stringResource(R.string.rincian_kejadian), value = rincianKejadian, isMultiline = true)
+        SummaryItem(label = stringResource(R.string.rincian_kejadian), value = rincianKejadian, isMultiline = true, isRequired = true)
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-        uploadedFileName?.let {
-            SummaryItem(
-                label = stringResource(R.string.bukti_pelanggaran),
-                value = it,
-                isFile = true,
-                onFilePreview = onPreviewFile
+        if (uploadedFileName.isNotEmpty()) {
+            Text(
+                text = stringResource(R.string.bukti),
+                color = Color.Black,
             )
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                shape = RoundedCornerShape(8.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                border = BorderStroke(1.dp, Color.Gray)
+            ) {
+                Column(
+                    modifier = Modifier.padding(12.dp)
+                ) {
+                    if (fileUri != null && uploadedFileName.lowercase().matches(Regex(".+\\.(jpg|jpeg|png|gif)$"))) {
+                        AsyncImage(
+                            model = ImageRequest.Builder(context)
+                                .data(fileUri)
+                                .crossfade(true)
+                                .build(),
+                            contentDescription = stringResource(R.string.image_preview),
+                            contentScale = ContentScale.Fit,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp)
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(Color(0xFFF5F5F5))
+                        )
+                    } else if (uploadedFileName.lowercase().endsWith(".pdf")) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { onPreviewFile?.invoke() },
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_doc),
+                                contentDescription = "PDF File",
+                                modifier = Modifier.size(42.dp)
+                            )
+
+                            Column(
+                                modifier = Modifier
+                                    .padding(start = 12.dp)
+                                    .weight(1f)
+                            ) {
+                                Text(
+                                    text = uploadedFileName,
+                                    color = Color.Black,
+                                    fontSize = 16.sp
+                                )
+                                Text(
+                                    text = stringResource(R.string.tap_to_preview),
+                                    color = Color(0xFF1976D2),
+                                    fontSize = 14.sp,
+                                    textDecoration = TextDecoration.Underline
+                                )
+                            }
+                        }
+                    } else {
+                        Text(
+                            text = uploadedFileName,
+                            color = Color.Gray,
+                            fontSize = 14.sp
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
         }
+
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
@@ -107,6 +196,7 @@ fun StepThree(
             onClick = onSubmit
         )
 
+        Spacer(modifier = Modifier.height(32.dp))
     }
 }
 

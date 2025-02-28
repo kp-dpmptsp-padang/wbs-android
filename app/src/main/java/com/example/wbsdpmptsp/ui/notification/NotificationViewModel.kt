@@ -32,6 +32,9 @@ class NotificationViewModel(private val repository: NotificationRepository) : Vi
                 Result.Loading -> {
                     _loading.value = true
                 }
+                is Result.Empty -> {
+
+                }
             }
             _loading.value = false
         }
@@ -49,6 +52,9 @@ class NotificationViewModel(private val repository: NotificationRepository) : Vi
                 Result.Loading -> {
                     _loading.value = true
                 }
+                is Result.Empty -> {
+
+                }
             }
         }
     }
@@ -64,6 +70,9 @@ class NotificationViewModel(private val repository: NotificationRepository) : Vi
                 }
                 Result.Loading -> {
                     _loading.value = true
+                }
+                is Result.Empty -> {
+
                 }
             }
         }
