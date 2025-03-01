@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,6 +17,7 @@ import com.example.wbsdpmptsp.ui.component.CustomButton
 import com.example.wbsdpmptsp.ui.component.CustomDatePicker
 import com.example.wbsdpmptsp.ui.component.CustomTextField
 import com.example.wbsdpmptsp.ui.component.CustomTitle
+import com.example.wbsdpmptsp.ui.component.StepBottomSheetDialog
 
 @Composable
 fun StepOne(
@@ -30,13 +33,16 @@ fun StepOne(
     onPihakTerlibatChange: (String) -> Unit,
     onNext: () -> Unit
 ) {
+
+    val showDialog = remember { mutableStateOf(false) }
+
     Column(modifier = Modifier.padding(24.dp)) {
         CustomTitle(title = stringResource(id = R.string.form))
 
         CustomButton(
             text = stringResource(id = R.string.step),
             onClick = {
-
+                showDialog.value = true
             },
             modifier = Modifier
                 .align(Alignment.End),
@@ -86,6 +92,22 @@ fun StepOne(
             text = stringResource(R.string.next),
             onClick = onNext,
             enabled = judul.isNotBlank() && pelanggaran.isNotBlank() && lokasi.isNotBlank() && tanggal.isNotBlank() && pihakTerlibat.isNotBlank()
+        )
+    }
+
+    val stepsList = listOf(
+        stringResource(R.string.step_1_2),
+        stringResource(R.string.step_1_3),
+        stringResource(R.string.step_1_4),
+        stringResource(R.string.step_1_5),
+        stringResource(R.string.step_1_6)
+    )
+
+    if (showDialog.value) {
+        StepBottomSheetDialog(
+            showDialog = showDialog.value,
+            onDismiss = { showDialog.value = false },
+            steps = stepsList
         )
     }
 }

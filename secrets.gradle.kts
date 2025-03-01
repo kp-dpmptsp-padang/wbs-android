@@ -7,3 +7,4 @@ fun Project.getLocalProperty(key: String, defaultValue: String = ""): String {
     return localProperties.getProperty(key) ?: defaultValue
 }
 extra["BASE_URL"] = getLocalProperty("BASE_URL")
+extra["FILE_URL"] = getLocalProperty("FILE_URL")
