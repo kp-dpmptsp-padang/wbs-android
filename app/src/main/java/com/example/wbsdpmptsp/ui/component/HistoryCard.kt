@@ -37,13 +37,13 @@ fun formatDate(date: LocalDateTime): String {
 
 @Composable
 fun HistoryCard(
+    id: Int,
     name: String,
     description: String,
     date: String,
-    onInfoClick: () -> Unit,
+    onInfoClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     val parsedDate = parseDate(date)
     val formattedDate = formatDate(parsedDate)
 
@@ -53,8 +53,8 @@ fun HistoryCard(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         border = BorderStroke(1.dp, color = Color.LightGray),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        ) {
-        Row (
+    ) {
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
@@ -82,7 +82,7 @@ fun HistoryCard(
                 )
             }
 
-            IconButton(onClick = onInfoClick) {
+            IconButton(onClick = { onInfoClick(id) }) {
                 Icon(
                     imageVector = Icons.Default.Info,
                     contentDescription = "Info",

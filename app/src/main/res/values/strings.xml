@@ -48,6 +48,7 @@
     <string name="identity_secret">Identitas Anda akan dilindungi dan tidak akan diungkapkan kepada pihak yang bersangkutan</string>
     <string name="tracking">Lacak Laporan</string>
     <string name="need_help">Butuh Bantuan?</string>
+    <string name="need_help_more">Butuh Bantuan Lanjut?</string>
     <string name="email_dpmptsp">dpmptsp@padang.go.id</string>
     <string name="phone_dpmptsp">081374078088</string>
     <string name="notif">Notifikasi</string>
@@ -55,6 +56,7 @@
     <string name="icon">Icon</string>
     <string name="form">Form Pelaporan Whistleblowing System</string>
     <string name="step">Panduan</string>
+    <string name="step_title">Panduan Pengisian Form Laporan</string>
 
     <string name="pungli">1. Pungutan Liar (Pungli)</string>
     <string name="sop">2. Pelayanan yang tidak sesuai SOP</string>
@@ -118,4 +120,22 @@
     <string name="about">Tentang Aplikasi WBS DPMPTSP</string>
     <string name="version">v 1.0</string>
     <string name="explain_ver">Aplikasi CLEAR adalah platform pelaporan untuk DPMPTSP Kota Padang yang memungkinkan masyarakat melaporkan tindakan kriminal, korupsi, nepotisme, suap, atau penyalahgunaan wewenang. Dengan fitur pelaporan anonim, aplikasi ini memastikan keamanan dan kenyamanan pelapor dalam menjaga transparansi dan akuntabilitas.</string>
+    <string name="step_1_1">Field yang ditandai dengan * wajib diisi</string>
+    <string name="step_1_2">Isi judul laporan dengan jelas, minimal 3 kata</string>
+    <string name="step_1_3">Isi pelanggaran yang dilakukan pelaku.</string>
+    <string name="step_1_4">Isi lokasi kejadian pelanggaran</string>
+    <string name="step_1_5">Pilih tanggal kejadian pelanggaran.</string>
+    <string name="step_1_6">Isikan nama atau jabatan pihak yang terlibat</string>
+    <string name="step_1_7">Ceritakan detail kejadian yang Anda alami, minimal 50 karakter</string>
+    <string name="step_1_8">Lampirkan bukti apabila ada untuk memperkuat laporan Anda</string>
+    <string name="tutup">Tutup</string>
+    <string name="no_attachments">Tidak ada Lampiran</string>
+    <string name="no_data_available">Tidak ada Data</string>
+    <string name="no_description_available">Tidak ada Detail</string>
+    <string name="attachments">Lampiran</string>
+    <string name="description">Detail Kejadian</string>
+    <string name="admin_notes">Catatan Admin</string>
+    <string name="rejection_reason">Alasan Ditolak</string>
+    <string name="report_detail">Detail Laporan</string>
+    <string name="loading_data">Memuat Data</string>
 </resources>

@@ -23,6 +23,7 @@ import com.example.wbsdpmptsp.R
 import com.example.wbsdpmptsp.ui.ViewModelFactory
 import com.example.wbsdpmptsp.ui.component.BottomNav
 import com.example.wbsdpmptsp.ui.component.CustomTitle
+import com.example.wbsdpmptsp.ui.component.DetailReportDialog
 import com.example.wbsdpmptsp.ui.component.HistoryCard
 import com.example.wbsdpmptsp.ui.theme.primaryBlue
 import kotlinx.coroutines.launch
@@ -40,6 +41,18 @@ fun HistoryScreen(
     val loading by viewModel.loading.observeAsState(initial = false)
     val error by viewModel.error.observeAsState(initial = "")
 
+    val reportDetail by viewModel.reportDetail.observeAsState()
+    val detailLoading by viewModel.detailLoading.observeAsState(initial = false)
+    val detailError by viewModel.detailError.observeAsState(initial = "")
+
+    var showDetailDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(reportDetail) {
+        if (reportDetail != null) {
+            showDetailDialog = true
+        }
+    }
+
     LaunchedEffect(pagerState.currentPage) {
         val status = when (tabsPosition[pagerState.currentPage]) {
             "Menunggu" -> "menunggu-verifikasi"
@@ -49,6 +62,17 @@ fun HistoryScreen(
             else -> ""
         }
         viewModel.getHistory(status)
+    }
+
+    if (showDetailDialog) {
+        DetailReportDialog(
+            detailReport = reportDetail,
+            onDismiss = {
+                showDetailDialog = false
+                viewModel.clearReportDetail()
+            },
+            isLoading = detailLoading
+        )
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -161,10 +185,13 @@ fun HistoryScreen(
                                 val item = history!![index]
                                 item?.let {
                                     HistoryCard(
+                                        id = it.id ?: 0,
                                         name = it.title ?: "Unknown",
                                         description = it.detail ?: "No details",
                                         date = it.date ?: "Unknown",
-                                        onInfoClick = { }
+                                        onInfoClick = { reportId ->
+                                            viewModel.getDetailReport(reportId)
+                                        }
                                     )
                                 }
                             }

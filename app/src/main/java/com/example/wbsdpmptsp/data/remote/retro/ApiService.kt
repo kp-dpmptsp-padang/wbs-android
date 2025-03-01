@@ -4,6 +4,7 @@ import com.example.wbsdpmptsp.data.remote.request.LoginRequest
 import com.example.wbsdpmptsp.data.remote.request.LogoutRequest
 import com.example.wbsdpmptsp.data.remote.request.RegisterRequest
 import com.example.wbsdpmptsp.data.remote.response.AuthResponse
+import com.example.wbsdpmptsp.data.remote.response.DetailReportResponse
 import com.example.wbsdpmptsp.data.remote.response.HistoryResponse
 import com.example.wbsdpmptsp.data.remote.response.MessageResponse
 import com.example.wbsdpmptsp.data.remote.response.NotificationResponse
@@ -54,6 +55,12 @@ interface ApiService {
     suspend fun history(
         @Header("Authorization") authHeader: String
     ): Response<HistoryResponse>
+
+    @GET("reports/{id}")
+    suspend fun detailReport(
+        @Header("Authorization") authHeader: String,
+        @Path("id") id: Int
+    ): Response<DetailReportResponse>
 
     @GET("notifications")
     suspend fun notification(

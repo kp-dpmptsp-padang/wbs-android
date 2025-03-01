@@ -5,6 +5,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -45,6 +47,7 @@ fun ProfileScreen(
     val logoutResult: Result<MessageResponse>? = viewModel.logoutResult.observeAsState(initial = null).value
     val profileResult: Result<ProfileResponse> = viewModel.profileResult.observeAsState(initial = Result.Loading).value
     val isLoading: Boolean = viewModel.isLoading.observeAsState(initial = false).value
+    val scrollState = rememberScrollState()
 
     val userData = when (profileResult) {
         is Result.Success -> profileResult.data.data?.user
@@ -55,6 +58,7 @@ fun ProfileScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
+            .verticalScroll(scrollState)
     ) {
         if (isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))

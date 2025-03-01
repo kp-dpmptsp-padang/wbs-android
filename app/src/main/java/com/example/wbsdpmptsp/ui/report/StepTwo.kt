@@ -29,6 +29,8 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,6 +48,7 @@ import com.example.wbsdpmptsp.R
 import com.example.wbsdpmptsp.ui.component.CustomButton
 import com.example.wbsdpmptsp.ui.component.CustomTextAreaField
 import com.example.wbsdpmptsp.ui.component.CustomTitle
+import com.example.wbsdpmptsp.ui.component.StepBottomSheetDialog
 
 @Composable
 fun StepTwo(
@@ -61,6 +64,7 @@ fun StepTwo(
     onPreviewFile: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
+    val showDialog = remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.padding(24.dp)) {
         Row{
@@ -80,7 +84,7 @@ fun StepTwo(
         CustomButton(
             text = stringResource(id = R.string.step),
             onClick = {
-
+                showDialog.value = true
             },
             modifier = Modifier
                 .align(Alignment.End),
@@ -230,6 +234,18 @@ fun StepTwo(
             text = stringResource(R.string.next),
             onClick = onNext,
             enabled = rincianKejadian.isNotEmpty()
+        )
+    }
+    val stepsList = listOf(
+        stringResource(R.string.step_1_7),
+        stringResource(R.string.step_1_8),
+    )
+
+    if (showDialog.value) {
+        StepBottomSheetDialog(
+            showDialog = showDialog.value,
+            onDismiss = { showDialog.value = false },
+            steps = stepsList
         )
     }
 }
