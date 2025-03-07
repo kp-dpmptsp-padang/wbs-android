@@ -8,11 +8,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.wbsdpmptsp.data.local.UserPreference
 import com.example.wbsdpmptsp.ui.about.AboutScreen
+import com.example.wbsdpmptsp.ui.auth.forgotPassword.ForgotPasswordScreen
+import com.example.wbsdpmptsp.ui.auth.forgotPassword.InputCodeScreen
+import com.example.wbsdpmptsp.ui.auth.forgotPassword.NewPasswordScreen
 import com.example.wbsdpmptsp.ui.auth.login.LoginScreen
 import com.example.wbsdpmptsp.ui.auth.register.RegisterScreen
 import com.example.wbsdpmptsp.ui.faq.FaqScreen
@@ -66,6 +71,41 @@ class MainActivity : ComponentActivity() {
                             }
                             composable("faq") { FaqScreen(onBack = { navController.popBackStack() }) }
                             composable("about") { AboutScreen(onBack = { navController.popBackStack() }) }
+                            composable("forgot_password") { ForgotPasswordScreen(navController =
+                                navController, onBack = { navController.popBackStack() }) }
+                            composable(
+                                route = "input_code?email={email}",
+                                arguments = listOf(
+                                    navArgument("email") {
+                                        type = NavType.StringType
+                                        nullable = true
+                                        defaultValue = null
+                                    }
+                                )
+                            ) { backStackEntry ->
+                                val email = backStackEntry.arguments?.getString("email") ?: ""
+                                InputCodeScreen(
+                                    navController = navController,
+                                    onBack = { navController.popBackStack() },
+                                    email = email
+                                )
+                            }
+                            composable(
+                                route = "reset_password?email={email}&code={code}",
+                                arguments = listOf(
+                                    navArgument("email") { type = NavType.StringType },
+                                    navArgument("code") { type = NavType.StringType }
+                                )
+                            ) { backStackEntry ->
+                                val email = backStackEntry.arguments?.getString("email") ?: ""
+                                val code = backStackEntry.arguments?.getString("code") ?: ""
+                                NewPasswordScreen(
+                                    onBack = { navController.popBackStack() },
+                                    email = email,
+                                    code = code,
+                                    navController = navController
+                                )
+                            }
                         }
                     }
                 }

@@ -40,6 +40,7 @@ import com.example.wbsdpmptsp.ui.component.CustomFaq
 import com.example.wbsdpmptsp.ui.component.CustomTitle
 import com.example.wbsdpmptsp.ui.theme.primaryBlue
 import com.example.wbsdpmptsp.ui.theme.secondaryBlue
+import androidx.core.net.toUri
 
 @Composable
 fun FaqScreen(
@@ -56,7 +57,7 @@ fun FaqScreen(
             FloatingActionButton(
                 onClick = {
                     val intent = Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse("https://wa.me/$waNumber")
+                        data = "https://wa.me/$waNumber".toUri()
                     }
                     context.startActivity(intent)
                 },

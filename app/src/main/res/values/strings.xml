@@ -138,4 +138,16 @@
     <string name="rejection_reason">Alasan Ditolak</string>
     <string name="report_detail">Detail Laporan</string>
     <string name="loading_data">Memuat Data</string>
+    <string name="kirim">Kirim</string>
+
+    <string name="cari_akun">Cari Akun Anda</string>
+    <string name="masukkan_email">Masukkan email yang terdaftar untuk mendapatkan link reset password</string>
+
+    <string name="konfirm_akun">Konfirmasi Akun Anda</string>
+    <string name="code">Kami sudah mengirimkan kode ke email Anda. Masukkan kode tersebut untuk mengonfirmasi akun Anda.</string>
+    <string name="code_verif">Kode Verifikasi</string>
+
+    <string name="atur_password">Atur Password Baru</string>
+    <string name="new_pw">Buat password baru yang kuat dan jangan lupa disimpan/dicatat.</string>
+
 </resources>

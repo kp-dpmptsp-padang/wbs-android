@@ -43,7 +43,6 @@ fun HistoryScreen(
 
     val reportDetail by viewModel.reportDetail.observeAsState()
     val detailLoading by viewModel.detailLoading.observeAsState(initial = false)
-    val detailError by viewModel.detailError.observeAsState(initial = "")
 
     var showDetailDialog by remember { mutableStateOf(false) }
 
@@ -75,12 +74,15 @@ fun HistoryScreen(
         )
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+        .fillMaxSize()
+        .background(Color.White)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 66.dp)
-                .background(Color.White)
+                .padding(bottom = 80.dp)
         ) {
             CustomTitle(title = stringResource(id = R.string.report_history))
 
@@ -176,9 +178,13 @@ fun HistoryScreen(
                     } else {
                         LazyColumn(
                             modifier = Modifier
-                                .fillMaxSize()
-                                .padding(bottom = 32.dp),
-                            contentPadding = PaddingValues(16.dp),
+                                .fillMaxSize(),
+                            contentPadding = PaddingValues(
+                                start = 16.dp,
+                                end = 16.dp,
+                                top = 16.dp,
+                                bottom = 32.dp
+                            ),
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             items(history!!.size) { index ->
@@ -204,6 +210,7 @@ fun HistoryScreen(
         BottomNav(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(80.dp)
                 .align(Alignment.BottomCenter),
             navController = navController
         )
