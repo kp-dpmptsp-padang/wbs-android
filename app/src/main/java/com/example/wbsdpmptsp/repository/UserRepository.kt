@@ -1,9 +1,13 @@
 package com.example.wbsdpmptsp.repository
 
+import android.util.Log
 import com.example.wbsdpmptsp.data.local.UserPreference
+import com.example.wbsdpmptsp.data.remote.request.ForgotPasswordRequest
 import com.example.wbsdpmptsp.data.remote.request.LoginRequest
 import com.example.wbsdpmptsp.data.remote.request.LogoutRequest
 import com.example.wbsdpmptsp.data.remote.request.RegisterRequest
+import com.example.wbsdpmptsp.data.remote.request.ResetPasswordRequest
+import com.example.wbsdpmptsp.data.remote.request.VerifyCodeRequest
 import com.example.wbsdpmptsp.data.remote.response.AuthResponse
 import com.example.wbsdpmptsp.data.remote.response.ErrorResponse
 import com.example.wbsdpmptsp.data.remote.response.MessageResponse
@@ -119,6 +123,57 @@ class UserRepository private constructor(
                 } ?: Result.Error("Profile not found")
             } else {
                 Result.Error(response.message() ?: "Profile not found")
+            }
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "An error occurred")
+        }
+    }
+
+    suspend fun forgotPassword(email: String): Result<MessageResponse> {
+        return try {
+            val request = ForgotPasswordRequest(email)
+            val response = apiService.forgotPassword(request)
+
+            if (response.isSuccessful) {
+                response.body()?.let { messageResponse ->
+                    Result.Success(messageResponse)
+                } ?: Result.Error("Forgot password failed")
+            } else {
+                Result.Error(response.message() ?: "Forgot password failed")
+            }
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "An error occurred")
+        }
+    }
+
+    suspend fun verifyCode(email: String, code: String): Result<MessageResponse> {
+        return try {
+            val request = VerifyCodeRequest(email, code)
+            val response = apiService.verifyCode(request)
+
+            if (response.isSuccessful) {
+                response.body()?.let { messageResponse ->
+                    Result.Success(messageResponse)
+                } ?: Result.Error("Verification failed")
+            } else {
+                Result.Error(response.message() ?: "Verification failed")
+            }
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "An error occurred")
+        }
+    }
+
+    suspend fun resetPassword(email: String, code: String, password: String): Result<MessageResponse> {
+        return try {
+            val request = ResetPasswordRequest(email, code, password)
+            val response = apiService.resetPassword(request)
+
+            if (response.isSuccessful) {
+                response.body()?.let { messageResponse ->
+                    Result.Success(messageResponse)
+                } ?: Result.Error("Password reset failed")
+            } else {
+                Result.Error(response.message() ?: "Password reset failed")
             }
         } catch (e: Exception) {
             Result.Error(e.message ?: "An error occurred")

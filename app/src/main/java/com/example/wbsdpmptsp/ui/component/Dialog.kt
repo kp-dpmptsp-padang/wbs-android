@@ -43,6 +43,7 @@ fun StepBottomSheetDialog(
     if (showDialog) {
         ModalBottomSheet(
             onDismissRequest = onDismiss,
+            containerColor = Color.White,
             sheetState = rememberModalBottomSheetState()
         ) {
             Column(

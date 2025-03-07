@@ -1,8 +1,11 @@
 package com.example.wbsdpmptsp.data.remote.retro
 
+import com.example.wbsdpmptsp.data.remote.request.ForgotPasswordRequest
 import com.example.wbsdpmptsp.data.remote.request.LoginRequest
 import com.example.wbsdpmptsp.data.remote.request.LogoutRequest
 import com.example.wbsdpmptsp.data.remote.request.RegisterRequest
+import com.example.wbsdpmptsp.data.remote.request.ResetPasswordRequest
+import com.example.wbsdpmptsp.data.remote.request.VerifyCodeRequest
 import com.example.wbsdpmptsp.data.remote.response.AuthResponse
 import com.example.wbsdpmptsp.data.remote.response.DetailReportResponse
 import com.example.wbsdpmptsp.data.remote.response.HistoryResponse
@@ -39,6 +42,21 @@ interface ApiService {
     suspend fun logout(
         @Header("Authorization") authHeader: String,
         @Body request: LogoutRequest
+    ): Response<MessageResponse>
+
+    @POST("auth/forgot-password-android")
+    suspend fun forgotPassword(
+        @Body request : ForgotPasswordRequest
+    ): Response<MessageResponse>
+
+    @POST("auth/verify-code")
+    suspend fun verifyCode(
+        @Body request: VerifyCodeRequest
+    ): Response<MessageResponse>
+
+    @POST("auth/reset-password-android")
+    suspend fun resetPassword(
+        @Body request: ResetPasswordRequest
     ): Response<MessageResponse>
 
     @GET("auth/profile")

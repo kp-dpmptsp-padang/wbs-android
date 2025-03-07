@@ -58,7 +58,6 @@ fun ProfileScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .verticalScroll(scrollState)
     ) {
         if (isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -87,7 +86,9 @@ fun ProfileScreen(
             Column(
                 modifier = modifier
                     .fillMaxSize()
-                    .padding(32.dp),
+                    .padding(32.dp)
+                    .verticalScroll(scrollState)
+                    .padding(bottom = 128.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(

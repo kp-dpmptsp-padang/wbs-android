@@ -41,9 +41,10 @@ import com.example.wbsdpmptsp.ui.component.CustomTextField
 import com.example.wbsdpmptsp.utils.Result
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier, navController: NavHostController, viewModel: LoginViewModel =
-    viewModel(
-    factory = ViewModelFactory.getInstance(LocalContext.current)
+fun LoginScreen(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    viewModel: LoginViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current)
 )) {
     val context = LocalContext.current
     val loginResult by viewModel.loginResult.observeAsState()

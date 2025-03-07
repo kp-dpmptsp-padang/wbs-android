@@ -58,7 +58,7 @@ fun NotificationScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 66.dp)
+                .padding(bottom = 80.dp)
         ) {
             CustomTitle(title = stringResource(id = R.string.notif))
 
@@ -130,8 +130,14 @@ fun NotificationScreen(
                 }
             } else {
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(16.dp),
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentPadding = PaddingValues(
+                        start = 16.dp,
+                        end = 16.dp,
+                        top = 16.dp,
+                        bottom = 32.dp
+                    ),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(notifications!!.size) { index ->
@@ -155,6 +161,7 @@ fun NotificationScreen(
         BottomNav(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(80.dp)
                 .align(Alignment.BottomCenter),
             navController = navController
         )

@@ -2,7 +2,6 @@ package com.example.wbsdpmptsp.ui.auth.register
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -52,12 +51,12 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavHostControll
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(14.dp)
-            .verticalScroll(scrollState),
+            .verticalScroll(scrollState)
+            .padding(14.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -79,9 +78,8 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavHostControll
             )
         }
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
                 .padding(horizontal = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -118,23 +116,27 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavHostControll
             var password by remember { mutableStateOf("") }
             var confirmPassword by remember { mutableStateOf("") }
 
-            CustomTextField(value = name, onValueChange = { name = it }, label = stringResource(R
-                .string.name))
+            CustomTextField(value = name, onValueChange = { name = it }, label = stringResource(R.string.name))
             Spacer(modifier = Modifier.height(10.dp))
 
-            CustomTextField(value = email, onValueChange = { email = it }, label = stringResource
-                (R.string.email))
+            CustomTextField(value = email, onValueChange = { email = it }, label = stringResource(R.string.email))
             Spacer(modifier = Modifier.height(10.dp))
 
-            CustomTextField(value = password, onValueChange = { password = it }, label =
-            stringResource(R.string.password),
-                isPassword = true)
+            CustomTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = stringResource(R.string.password),
+                isPassword = true
+            )
             Spacer(modifier = Modifier.height(10.dp))
 
-            CustomTextField(value = confirmPassword, onValueChange = { confirmPassword = it },
-                label = stringResource(R.string.confirm_password), isPassword = true)
+            CustomTextField(
+                value = confirmPassword,
+                onValueChange = { confirmPassword = it },
+                label = stringResource(R.string.confirm_password),
+                isPassword = true
+            )
             Spacer(modifier = Modifier.height(14.dp))
-
 
             CustomButton(
                 text = stringResource(R.string.register),
@@ -143,18 +145,18 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavHostControll
                         password.isNotBlank() && confirmPassword.isNotBlank()
             )
 
-
             if (isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
             }
+
+            Spacer(modifier = Modifier.height(24.dp))
         }
 
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Bottom
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CustomButton(
                 text = stringResource(R.string.already_regis),
@@ -171,7 +173,7 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavHostControll
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun RegisterScreenPreview() {
     RegisterScreen(navController = NavHostController(LocalContext.current))

@@ -8,6 +8,7 @@ import com.example.wbsdpmptsp.repository.HistoryRepository
 import com.example.wbsdpmptsp.repository.NotificationRepository
 import com.example.wbsdpmptsp.repository.ReportRepository
 import com.example.wbsdpmptsp.repository.UserRepository
+import com.example.wbsdpmptsp.ui.auth.forgotPassword.ForgotPasswordViewModel
 import com.example.wbsdpmptsp.ui.auth.login.LoginViewModel
 import com.example.wbsdpmptsp.ui.auth.register.RegisterViewModel
 import com.example.wbsdpmptsp.ui.history.HistoryViewModel
@@ -42,6 +43,9 @@ class ViewModelFactory private constructor(
             }
             modelClass.isAssignableFrom(ReportViewModel::class.java) -> {
                 ReportViewModel(reportRepo) as T
+            }
+            modelClass.isAssignableFrom(ForgotPasswordViewModel::class.java) -> {
+                ForgotPasswordViewModel(userRepo) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
