@@ -57,7 +57,7 @@ fun NewPasswordScreen(
                 LaunchedEffect(result) {
                     Toast.makeText(
                         context,
-                        result.data.message ?: "Password reset successful",
+                        context.getString(R.string.reset_success),
                         Toast.LENGTH_SHORT
                     ).show()
                     navController.navigate("login") {
@@ -124,7 +124,7 @@ fun NewPasswordScreen(
 
         if (!passwordsMatch) {
             Text(
-                text = "Passwords do not match",
+                text = stringResource(R.string.donot_match),
                 color = Color.Red,
                 fontSize = 12.sp,
                 modifier = Modifier.padding(top = 4.dp)

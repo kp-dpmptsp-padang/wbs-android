@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.implementation
+
 apply(from = "../secrets.gradle.kts")
 plugins {
     alias(libs.plugins.android.application)

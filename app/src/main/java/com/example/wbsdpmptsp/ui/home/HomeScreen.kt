@@ -182,7 +182,7 @@ fun HomeScreen(
                     CustomButton(
                         text = stringResource(R.string.tracking),
                         onClick = {
-                            navController.navigate("track-report")
+                            navController.navigate("track_anonym")
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -227,7 +227,7 @@ fun HomeScreen(
                     }
                     Row {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_wa),
+                            painter = painterResource(id = R.drawable.ic_whatsapp),
                             contentDescription = stringResource(R.string.icon),
                             modifier = Modifier
                                 .padding(horizontal = 16.dp)

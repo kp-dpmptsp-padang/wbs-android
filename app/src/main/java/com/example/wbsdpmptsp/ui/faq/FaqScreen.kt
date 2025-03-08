@@ -1,7 +1,7 @@
 package com.example.wbsdpmptsp.ui.faq
 
+import android.R.attr.contentDescription
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -35,12 +35,12 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import com.example.wbsdpmptsp.R
 import com.example.wbsdpmptsp.ui.component.CustomFaq
 import com.example.wbsdpmptsp.ui.component.CustomTitle
 import com.example.wbsdpmptsp.ui.theme.primaryBlue
 import com.example.wbsdpmptsp.ui.theme.secondaryBlue
-import androidx.core.net.toUri
 
 @Composable
 fun FaqScreen(
@@ -161,7 +161,7 @@ fun FaqScreen(
                     }
                     Row {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_wa),
+                            painter = painterResource(id = R.drawable.ic_whatsapp),
                             contentDescription = stringResource(R.string.icon),
                             modifier = Modifier
                                 .padding(horizontal = 16.dp)

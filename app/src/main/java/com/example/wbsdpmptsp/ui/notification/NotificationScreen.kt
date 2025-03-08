@@ -100,7 +100,7 @@ fun NotificationScreen(
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            text = error,
+                            text = stringResource(R.string.refresh_session),
                             color = Color.Red,
                             textAlign = TextAlign.Center
                         )
@@ -111,7 +111,7 @@ fun NotificationScreen(
                             onClick = { viewModel.getNotification() },
                             colors = ButtonDefaults.buttonColors(containerColor = primaryBlue)
                         ) {
-                            Text("Refresh")
+                            Text(stringResource(R.string.refresh))
                         }
                     }
                 }

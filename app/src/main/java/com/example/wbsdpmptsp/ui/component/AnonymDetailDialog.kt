@@ -1,43 +1,59 @@
 package com.example.wbsdpmptsp.ui.component
 
-import android.content.Intent
-import android.net.Uri
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.*
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
-import com.example.wbsdpmptsp.BuildConfig
+import androidx.navigation.NavController
+import com.example.wbsdpmptsp.R
 import com.example.wbsdpmptsp.data.remote.response.DetailReportResponse
 import com.example.wbsdpmptsp.ui.theme.primaryBlue
-import com.example.wbsdpmptsp.R
-import androidx.core.net.toUri
 
 @Composable
-fun DetailReportDialog(
+fun CustomDetailReportDialog(
     detailReport: DetailReportResponse?,
     onDismiss: () -> Unit,
-    isLoading: Boolean
+    isLoading: Boolean,
+    navController: NavController,
+    uniqueCode: String
 ) {
     Dialog(
         onDismissRequest = onDismiss,
@@ -206,7 +222,7 @@ fun DetailReportDialog(
                                     reportData.date?.let { dateString ->
                                         val parsedDate = try {
                                             parseDate(dateString)
-                                        } catch (e: Exception) {
+                                        } catch (_: Exception) {
                                             null
                                         }
 
@@ -288,6 +304,39 @@ fun DetailReportDialog(
                             )
 
                             Spacer(modifier = Modifier.height(20.dp))
+
+                            if (reportData.processor != null && reportData.status != "menunggu-verifikasi" && reportData.status != "ditolak") {
+                                ElevatedButton(
+                                    onClick = {
+                                        navController.navigate("chat/${reportData.id}/${uniqueCode}") {
+                                            onDismiss()
+                                        }
+                                    },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    colors = ButtonDefaults.elevatedButtonColors(
+                                        containerColor = primaryBlue,
+                                        contentColor = Color.White
+                                    ),
+                                    shape = RoundedCornerShape(8.dp)
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.ic_chat),
+                                            contentDescription = "Chat with admin",
+                                            tint = Color.White,
+                                            modifier = Modifier.size(20.dp)
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text(
+                                            text = "Chat dengan Admin",
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    }
+                                }
+                                Spacer(modifier = Modifier.height(16.dp))
+                            }
                         }
 
                         if (!reportData.files.isNullOrEmpty()) {
@@ -354,226 +403,14 @@ fun DetailReportDialog(
     }
 }
 
+@Preview(showBackground = true)
 @Composable
-fun InfoRow(label: String, value: String, icon: Int) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            painter = painterResource(id = icon),
-            contentDescription = null,
-            tint = primaryBlue,
-            modifier = Modifier.size(16.dp)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = "$label: ",
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Bold,
-            color = Color.DarkGray
-        )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color.Black
-        )
-    }
-}
-
-@Composable
-fun SectionCard(
-    title: String,
-    content: String,
-    iconRes: Int,
-    backgroundColor: Color = Color(0xFFF5F5F5),
-    contentColor: Color = Color.Black
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        shape = RoundedCornerShape(12.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    painter = painterResource(id = iconRes),
-                    contentDescription = null,
-                    tint = primaryBlue,
-                    modifier = Modifier.size(18.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = primaryBlue
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = content,
-                style = MaterialTheme.typography.bodyMedium,
-                color = contentColor
-            )
-        }
-    }
-}
-
-@Composable
-fun FileAttachmentItem(filePath: String) {
-    val context = LocalContext.current
-    val baseUrl = BuildConfig.FILE_URL
-    val fullUrl = baseUrl + filePath.replace("\\", "/")
-
-    val isImage = fullUrl.lowercase().endsWith(".jpg") ||
-            fullUrl.lowercase().endsWith(".jpeg") ||
-            fullUrl.lowercase().endsWith(".png") ||
-            fullUrl.lowercase().endsWith(".gif")
-
-    val isPdf = fullUrl.lowercase().endsWith(".pdf")
-
-    val fileName = filePath.substringAfterLast("/")
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 6.dp)
-            .clickable {
-                try {
-                    val intent = Intent(Intent.ACTION_VIEW).apply {
-                        data = fullUrl.toUri()
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    }
-                    context.startActivity(intent)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            },
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, Color.LightGray),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        when {
-            isImage -> {
-                Column {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Image(
-                            painter = rememberAsyncImagePainter(
-                                ImageRequest.Builder(LocalContext.current)
-                                    .data(data = fullUrl)
-                                    .crossfade(true)
-                                    .build()
-                            ),
-                            contentDescription = "Attachment image",
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Fit
-                        )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color(0xFFEEEEEE))
-                            .padding(horizontal = 12.dp, vertical = 8.dp)
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_image),
-                                contentDescription = null,
-                                tint = primaryBlue,
-                                modifier = Modifier.size(16.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = stringResource(id = R.string.tap_to_preview),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = Color.DarkGray
-                            )
-                        }
-                    }
-                }
-            }
-            isPdf -> {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_doc),
-                        contentDescription = "PDF file",
-                        tint = Color.Red,
-                        modifier = Modifier.size(32.dp)
-                    )
-
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    Column {
-                        Text(
-                            text = fileName,
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = stringResource(id = R.string.tap_to_preview),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Color.Gray
-                        )
-                    }
-                }
-            }
-            else -> {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_doc),
-                        contentDescription = "File",
-                        tint = Color.Gray,
-                        modifier = Modifier.size(32.dp)
-                    )
-
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    Column {
-                        Text(
-                            text = stringResource(id = R.string.attachments),
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = stringResource(id = R.string.tap_to_preview),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Color.Gray
-                        )
-                    }
-                }
-            }
-        }
-    }
+fun PreviewCustomDetailReportDialog() {
+    CustomDetailReportDialog(
+        detailReport = DetailReportResponse(),
+        onDismiss = {},
+        isLoading = false,
+        navController = NavController(LocalContext.current),
+        uniqueCode = "123456"
+    )
 }
