@@ -110,4 +110,9 @@ interface ApiService {
         @Part evidence: MultipartBody.Part?
     ): Response<ReportResponse>
 
+    @GET("reports/anonymous/{unique_code}")
+    suspend fun trackReport(
+        @Header("Authorization") authHeader: String,
+        @Path("unique_code") uniqueCode: String
+    ): Response<DetailReportResponse>
 }

@@ -70,7 +70,7 @@ fun ProfileScreen(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = profileResult.error,
+                    text = stringResource(R.string.refresh_session),
                     color = Color.Red,
                     textAlign = TextAlign.Center
                 )
@@ -79,7 +79,7 @@ fun ProfileScreen(
                     onClick = { viewModel.fetchProfile() },
                     colors = ButtonDefaults.buttonColors(containerColor = primaryBlue)
                 ) {
-                    Text("Refresh")
+                    Text(stringResource(R.string.refresh))
                 }
             }
         } else {

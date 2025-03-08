@@ -93,6 +93,7 @@
     <string name="thanks">Terima kasih telah melaporkan. Laporan Anda telah diterima dan akan segera diverifikasi oleh tim kami.</string>
     <string name="beranda">Beranda</string>
     <string name="anonim_success">Mohon disimpan kode unik berikut agar Anda bisa melakukan tracking laporan nantinya karena laporan Anonim tidak akan ada di Riwayat Laporan</string>
+    <string name="input_code_anon">Masukkan kode unik yang Anda dapat saat berhasil membuat laporan sebagai anonim</string>
     <string name="success">Laporan Anda berhasil dibuat!</string>
     <string name="copy_code">Kode berhasil disalin!</string>
     <string name="salin_kode">Salin Kode</string>
@@ -149,5 +150,20 @@
 
     <string name="atur_password">Atur Password Baru</string>
     <string name="new_pw">Buat password baru yang kuat dan jangan lupa disimpan/dicatat.</string>
+    <string name="sending_code">Kode Verifikasi sudah dikirim ke Email Anda</string>
+    <string name="reset_success">Password berhasil direset! Silakan login kembali</string>
+    <string name="donot_match">Kata Sandi dan Konfirmasi Kata Sandi tidak sama\t</string>
+
+    <string name="unique">Kode Unik</string>
+    <string name="track">Lacak</string>
+    <string name="refresh_session">Sesi Anda telah habis. Silakan refresh halaman ini.</string>
+    <string name="refresh">Refresh</string>
+    <string name="kode_unik_tidak_boleh_kosong">Kode unik tidak boleh kosong</string>
+    <string name="welcome_1">Selamat Datang di CLEAR WBS DPMPTSP</string>
+    <string name="welcome_1_explain">Laporkan setiap pelanggaran pelayanan publik dengan aman dan terjamin kerahasiaannya. Kami berkomitmen untuk pelayanan yang bersih dan profesional.</string>
+    <string name="welcome_2">Laporkan Dengan Bukti</string>
+    <string name="welcome_2_explain">Sampaikan laporan pelanggaran seperti gratifikasi, suap, kekerasan, atau penyalahgunaan wewenang dengan bukti yang jelas dan dapat dipertanggungjawabkan.</string>
+    <string name="welcome_3">Identitas Anda Terlindungi</string>
+    <string name="welcome_3_explain">Jangan khawatir, identitas Anda sebagai pelapor akan kami jaga kerahasiaannya. Kami mengutamakan keamanan dan privasi Anda.</string>
 
 </resources>

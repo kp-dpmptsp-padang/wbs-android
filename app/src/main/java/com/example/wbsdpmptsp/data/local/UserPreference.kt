@@ -3,6 +3,7 @@ package com.example.wbsdpmptsp.data.local
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -20,6 +21,7 @@ class UserPreference(private val context: Context) {
     private val userNameKey = stringPreferencesKey("user_name")
     private val userEmailKey = stringPreferencesKey("user_email")
     private val userRoleKey = stringPreferencesKey("user_role")
+    private val onboardingCompletedKey = booleanPreferencesKey("onboarding_completed")
 
     suspend fun saveUser(response: AuthResponse) {
         context.dataStore.edit { preferences ->
@@ -48,7 +50,22 @@ class UserPreference(private val context: Context) {
 
     suspend fun clearUser() {
         context.dataStore.edit { preferences ->
-            preferences.clear()
+            preferences.remove(accessTokenKey)
+            preferences.remove(refreshTokenKey)
+            preferences.remove(userIdKey)
+            preferences.remove(userNameKey)
+            preferences.remove(userEmailKey)
+            preferences.remove(userRoleKey)
         }
+    }
+
+    suspend fun saveOnboardingCompleted(isCompleted: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[onboardingCompletedKey] = isCompleted
+        }
+    }
+
+    fun getOnboardingCompleted(): Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[onboardingCompletedKey] ?: false
     }
 }

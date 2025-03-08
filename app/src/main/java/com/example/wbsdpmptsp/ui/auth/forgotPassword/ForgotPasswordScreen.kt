@@ -103,7 +103,7 @@ fun ForgotPasswordScreen(
                     is Result.Success -> {
                         Toast.makeText(
                             context,
-                            result.data.message ?: "Reset link sent to your email",
+                            context.getString(R.string.sending_code),
                             Toast.LENGTH_SHORT
                         ).show()
                         navController.navigate("input_code?email=$email") {

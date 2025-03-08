@@ -76,8 +76,8 @@ fun HistoryScreen(
 
     Box(
         modifier = Modifier
-        .fillMaxSize()
-        .background(Color.White)
+            .fillMaxSize()
+            .background(Color.White)
     ) {
         Column(
             modifier = Modifier
@@ -134,7 +134,7 @@ fun HistoryScreen(
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            text = error,
+                            text = stringResource(R.string.refresh_session),
                             color = Color.Red,
                             textAlign = TextAlign.Center
                         )
@@ -154,7 +154,7 @@ fun HistoryScreen(
                             },
                             colors = ButtonDefaults.buttonColors(containerColor = primaryBlue)
                         ) {
-                            Text("Refresh")
+                            Text(stringResource(R.string.refresh))
                         }
                     }
                 }

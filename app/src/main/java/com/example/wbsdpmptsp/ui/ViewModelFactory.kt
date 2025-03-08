@@ -7,6 +7,7 @@ import com.example.wbsdpmptsp.di.Injection
 import com.example.wbsdpmptsp.repository.HistoryRepository
 import com.example.wbsdpmptsp.repository.NotificationRepository
 import com.example.wbsdpmptsp.repository.ReportRepository
+import com.example.wbsdpmptsp.repository.TrackReportRepository
 import com.example.wbsdpmptsp.repository.UserRepository
 import com.example.wbsdpmptsp.ui.auth.forgotPassword.ForgotPasswordViewModel
 import com.example.wbsdpmptsp.ui.auth.login.LoginViewModel
@@ -15,12 +16,14 @@ import com.example.wbsdpmptsp.ui.history.HistoryViewModel
 import com.example.wbsdpmptsp.ui.notification.NotificationViewModel
 import com.example.wbsdpmptsp.ui.profile.ProfileViewModel
 import com.example.wbsdpmptsp.ui.report.ReportViewModel
+import com.example.wbsdpmptsp.ui.track.TrackReportViewModel
 
 class ViewModelFactory private constructor(
     private val userRepo: UserRepository,
     private val historyRepo: HistoryRepository,
     private val notifRepo: NotificationRepository,
-    private val reportRepo: ReportRepository
+    private val reportRepo: ReportRepository,
+    private val trackRepo: TrackReportRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -47,6 +50,9 @@ class ViewModelFactory private constructor(
             modelClass.isAssignableFrom(ForgotPasswordViewModel::class.java) -> {
                 ForgotPasswordViewModel(userRepo) as T
             }
+            modelClass.isAssignableFrom(TrackReportViewModel::class.java) -> {
+                TrackReportViewModel(trackRepo) as T
+            }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }
@@ -61,7 +67,8 @@ class ViewModelFactory private constructor(
                     Injection.provideUserRepository(context),
                     Injection.provideHistoryRepository(context),
                     Injection.provideNotificationRepository(context),
-                    Injection.provideReportRepository(context)
+                    Injection.provideReportRepository(context),
+                    Injection.provideTrackReportRepository(context)
                 )
             }.also { instance = it }
     }

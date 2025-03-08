@@ -6,6 +6,7 @@ import com.example.wbsdpmptsp.data.remote.retro.ApiConfig
 import com.example.wbsdpmptsp.repository.HistoryRepository
 import com.example.wbsdpmptsp.repository.NotificationRepository
 import com.example.wbsdpmptsp.repository.ReportRepository
+import com.example.wbsdpmptsp.repository.TrackReportRepository
 import com.example.wbsdpmptsp.repository.UserRepository
 import com.example.wbsdpmptsp.utils.TokenManager
 
@@ -35,5 +36,10 @@ object Injection {
         return ReportRepository.getInstance(apiService, userPreference, tokenManager)
     }
 
-
+    fun provideTrackReportRepository(context: Context): TrackReportRepository {
+        val apiService = ApiConfig.createApiService(context)
+        val userPreference = UserPreference(context)
+        val tokenManager = TokenManager(context, userPreference)
+        return TrackReportRepository.getInstance(apiService, userPreference)
+    }
 }

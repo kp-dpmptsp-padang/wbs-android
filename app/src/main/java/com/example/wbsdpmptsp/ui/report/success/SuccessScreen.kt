@@ -104,14 +104,14 @@ fun SuccessScreen(navController: NavController) {
                             onClick = { navController.navigate("home") },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(10.dp),
-                            textStyle = TextStyle(fontSize = 13.sp)
+                            textStyle = TextStyle(fontSize = 12.sp)
                         )
                         CustomButton(
                             text = stringResource(R.string.report),
                             onClick = { navController.navigate("history") },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(10.dp),
-                            textStyle = TextStyle(fontSize = 13.sp)
+                            textStyle = TextStyle(fontSize = 12.sp)
                         )
                     }
                 }
