@@ -3,6 +3,7 @@ package com.example.wbsdpmptsp.di
 import android.content.Context
 import com.example.wbsdpmptsp.data.local.UserPreference
 import com.example.wbsdpmptsp.data.remote.retro.ApiConfig
+import com.example.wbsdpmptsp.repository.ChatRepository
 import com.example.wbsdpmptsp.repository.HistoryRepository
 import com.example.wbsdpmptsp.repository.NotificationRepository
 import com.example.wbsdpmptsp.repository.ReportRepository
@@ -39,7 +40,12 @@ object Injection {
     fun provideTrackReportRepository(context: Context): TrackReportRepository {
         val apiService = ApiConfig.createApiService(context)
         val userPreference = UserPreference(context)
-        val tokenManager = TokenManager(context, userPreference)
         return TrackReportRepository.getInstance(apiService, userPreference)
+    }
+
+    fun provideChatRepository(context: Context): ChatRepository {
+        val apiService = ApiConfig.createApiService(context)
+        val userPreference = UserPreference(context)
+        return ChatRepository.getInstance(apiService, userPreference)
     }
 }
