@@ -7,6 +7,7 @@ import com.example.wbsdpmptsp.data.remote.request.RegisterRequest
 import com.example.wbsdpmptsp.data.remote.request.ResetPasswordRequest
 import com.example.wbsdpmptsp.data.remote.request.VerifyCodeRequest
 import com.example.wbsdpmptsp.data.remote.response.AuthResponse
+import com.example.wbsdpmptsp.data.remote.response.ChatResponse
 import com.example.wbsdpmptsp.data.remote.response.DetailReportResponse
 import com.example.wbsdpmptsp.data.remote.response.HistoryResponse
 import com.example.wbsdpmptsp.data.remote.response.MessageResponse
@@ -115,4 +116,10 @@ interface ApiService {
         @Header("Authorization") authHeader: String,
         @Path("unique_code") uniqueCode: String
     ): Response<DetailReportResponse>
+
+    @GET("reports/{unique_code}/chats/anonymous")
+    suspend fun getAnonymousChat(
+        @Header("Authorization") authHeader: String,
+        @Path("unique_code") uniqueCode: String
+    ): Response<ChatResponse>
 }

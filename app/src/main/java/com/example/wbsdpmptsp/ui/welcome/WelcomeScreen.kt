@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -118,9 +119,9 @@ fun WelcomeScreen(
                 painter = painterResource(id = R.drawable.logo_dpmptsp),
                 contentDescription = "Logo DPMPTSP",
                 modifier = Modifier
-                    .size(250.dp)
                     .align(Alignment.TopCenter)
-                    .padding(top = 48.dp, bottom = 8.dp)
+                    .size(250.dp)
+                    .padding(vertical = 48.dp)
             )
         } else {
             Spacer(modifier = Modifier.height(80.dp))
@@ -329,12 +330,14 @@ fun OnboardingControls(
             colors = ButtonDefaults.buttonColors(
                 containerColor = primaryBlue,
                 contentColor = Color.White
-            )
+            ),
+            contentPadding = PaddingValues(0.dp)
         ) {
             Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = if (isLastPage) "Mulai" else "Selanjutnya",
-                tint = Color.White
+                tint = Color.White,
+                modifier = Modifier.size(24.dp)
             )
         }
     }

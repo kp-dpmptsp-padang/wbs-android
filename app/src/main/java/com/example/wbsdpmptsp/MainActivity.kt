@@ -22,6 +22,7 @@ import com.example.wbsdpmptsp.ui.auth.forgotPassword.InputCodeScreen
 import com.example.wbsdpmptsp.ui.auth.forgotPassword.NewPasswordScreen
 import com.example.wbsdpmptsp.ui.auth.login.LoginScreen
 import com.example.wbsdpmptsp.ui.auth.register.RegisterScreen
+import com.example.wbsdpmptsp.ui.chat.ChatScreen
 import com.example.wbsdpmptsp.ui.faq.FaqScreen
 import com.example.wbsdpmptsp.ui.history.HistoryScreen
 import com.example.wbsdpmptsp.ui.home.HomeScreen
@@ -48,8 +49,9 @@ class MainActivity : ComponentActivity() {
             val onboardingCompleted = userPreference.getOnboardingCompleted().first()
             val accessToken = userPreference.getAccessToken().first()
 
-            Log.d("MainActivity", "onboardingCompleted: $onboardingCompleted")
-            Log.d("MainActivity", "accessToken: $accessToken")
+            if (!onboardingCompleted) {
+                userPreference.clearUser()
+            }
 
             val startDestination = when {
                 !onboardingCompleted -> "welcome"
@@ -128,6 +130,18 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                             composable("track_anonym") { TrackReportScreen(navController = navController) }
+                            composable(
+                                route = "chat/{uniqueCode}",
+                                arguments = listOf(
+                                    navArgument("uniqueCode") { type = NavType.StringType }
+                                )
+                            ) { backStackEntry ->
+                                val uniqueCode = backStackEntry.arguments?.getString("uniqueCode") ?: ""
+                                ChatScreen(
+                                    uniqueCode = uniqueCode,
+                                    onBack = { navController.popBackStack() }
+                                )
+                            }
                         }
                     }
                 }

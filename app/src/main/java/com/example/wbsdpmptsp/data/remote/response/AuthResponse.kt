@@ -5,13 +5,13 @@ import com.google.gson.annotations.SerializedName
 data class AuthResponse(
 
 	@field:SerializedName("data")
-	val data: Data? = null,
+	val data: DataAuth? = null,
 
 	@field:SerializedName("message")
 	val message: String? = null
 )
 
-data class Data(
+data class DataAuth(
 
 	@field:SerializedName("access_token")
 	val accessToken: String? = null,
@@ -23,10 +23,10 @@ data class Data(
 	val tokenType: String? = null,
 
 	@field:SerializedName("user")
-	val user: User? = null
+	val user: UserAuth? = null
 )
 
-data class User(
+data class UserAuth(
 
 	@field:SerializedName("role")
 	val role: String? = null,

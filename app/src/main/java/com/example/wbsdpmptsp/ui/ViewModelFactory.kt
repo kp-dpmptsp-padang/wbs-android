@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.wbsdpmptsp.di.Injection
+import com.example.wbsdpmptsp.repository.ChatRepository
 import com.example.wbsdpmptsp.repository.HistoryRepository
 import com.example.wbsdpmptsp.repository.NotificationRepository
 import com.example.wbsdpmptsp.repository.ReportRepository
@@ -12,6 +13,7 @@ import com.example.wbsdpmptsp.repository.UserRepository
 import com.example.wbsdpmptsp.ui.auth.forgotPassword.ForgotPasswordViewModel
 import com.example.wbsdpmptsp.ui.auth.login.LoginViewModel
 import com.example.wbsdpmptsp.ui.auth.register.RegisterViewModel
+import com.example.wbsdpmptsp.ui.chat.ChatViewModel
 import com.example.wbsdpmptsp.ui.history.HistoryViewModel
 import com.example.wbsdpmptsp.ui.notification.NotificationViewModel
 import com.example.wbsdpmptsp.ui.profile.ProfileViewModel
@@ -23,7 +25,8 @@ class ViewModelFactory private constructor(
     private val historyRepo: HistoryRepository,
     private val notifRepo: NotificationRepository,
     private val reportRepo: ReportRepository,
-    private val trackRepo: TrackReportRepository
+    private val trackRepo: TrackReportRepository,
+    private val chatRepo: ChatRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -53,6 +56,9 @@ class ViewModelFactory private constructor(
             modelClass.isAssignableFrom(TrackReportViewModel::class.java) -> {
                 TrackReportViewModel(trackRepo) as T
             }
+            modelClass.isAssignableFrom(ChatViewModel::class.java) -> {
+                ChatViewModel(chatRepo) as T
+            }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }
@@ -68,7 +74,8 @@ class ViewModelFactory private constructor(
                     Injection.provideHistoryRepository(context),
                     Injection.provideNotificationRepository(context),
                     Injection.provideReportRepository(context),
-                    Injection.provideTrackReportRepository(context)
+                    Injection.provideTrackReportRepository(context),
+                    Injection.provideChatRepository(context)
                 )
             }.also { instance = it }
     }

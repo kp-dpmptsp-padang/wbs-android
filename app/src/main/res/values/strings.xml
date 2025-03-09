@@ -165,5 +165,10 @@
     <string name="welcome_2_explain">Sampaikan laporan pelanggaran seperti gratifikasi, suap, kekerasan, atau penyalahgunaan wewenang dengan bukti yang jelas dan dapat dipertanggungjawabkan.</string>
     <string name="welcome_3">Identitas Anda Terlindungi</string>
     <string name="welcome_3_explain">Jangan khawatir, identitas Anda sebagai pelapor akan kami jaga kerahasiaannya. Kami mengutamakan keamanan dan privasi Anda.</string>
+    <string name="chat_dengan_admin">Chat dengan Admin</string>
+    <string name="tulis_pesan_anda">Tulis pesan Anda.....</string>
+    <string name="about_unique">Kode unik ini berfungsi sebagai identifikasi laporan anonim Anda. Simpan kode ini dengan baik untuk mengakses laporan dan chat dengan admin.</string>
+    <string name="tentang_kode_unik">Tentang Kode Unik</string>
+    <string name="warning">Jangan bagikan kode unik ini kepada siapapun untuk menjaga keamanan laporan Anda.</string>
 
 </resources>

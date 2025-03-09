@@ -308,7 +308,7 @@ fun CustomDetailReportDialog(
                             if (reportData.processor != null && reportData.status != "menunggu-verifikasi" && reportData.status != "ditolak") {
                                 ElevatedButton(
                                     onClick = {
-                                        navController.navigate("chat/${reportData.id}/${uniqueCode}") {
+                                        navController.navigate("chat/${uniqueCode}") {
                                             onDismiss()
                                         }
                                     },
@@ -330,7 +330,7 @@ fun CustomDetailReportDialog(
                                         )
                                         Spacer(modifier = Modifier.width(8.dp))
                                         Text(
-                                            text = "Chat dengan Admin",
+                                            text = stringResource(R.string.chat_dengan_admin),
                                             fontWeight = FontWeight.Bold
                                         )
                                     }
