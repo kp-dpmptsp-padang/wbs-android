@@ -5,16 +5,16 @@ import com.google.gson.annotations.SerializedName
 data class SendChatResponse(
 
 	@field:SerializedName("data")
-	val data: Data? = null,
+	val data: DataSendChat? = null,
 
 	@field:SerializedName("message")
 	val message: String? = null
 )
 
-data class Data(
+data class DataSendChat(
 
 	@field:SerializedName("data")
-	val data: Data? = null,
+	val data: DataSendChat? = null,
 
 	@field:SerializedName("created_at")
 	val createdAt: String? = null,
@@ -26,10 +26,10 @@ data class Data(
 	val message: String? = null,
 
 	@field:SerializedName("user")
-	val user: User? = null
+	val user: UserSendChat? = null
 )
 
-data class User(
+data class UserSendChat(
 
 	@field:SerializedName("role")
 	val role: String? = null,

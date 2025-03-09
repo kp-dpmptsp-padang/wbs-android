@@ -1,10 +1,13 @@
 package com.example.wbsdpmptsp.data.remote.retro
 
+import com.example.wbsdpmptsp.data.remote.request.ChangePasswordRequest
 import com.example.wbsdpmptsp.data.remote.request.ForgotPasswordRequest
 import com.example.wbsdpmptsp.data.remote.request.LoginRequest
 import com.example.wbsdpmptsp.data.remote.request.LogoutRequest
 import com.example.wbsdpmptsp.data.remote.request.RegisterRequest
 import com.example.wbsdpmptsp.data.remote.request.ResetPasswordRequest
+import com.example.wbsdpmptsp.data.remote.request.SendChatRequest
+import com.example.wbsdpmptsp.data.remote.request.UpdateProfileRequest
 import com.example.wbsdpmptsp.data.remote.request.VerifyCodeRequest
 import com.example.wbsdpmptsp.data.remote.response.AuthResponse
 import com.example.wbsdpmptsp.data.remote.response.ChatResponse
@@ -15,7 +18,9 @@ import com.example.wbsdpmptsp.data.remote.response.NotificationResponse
 import com.example.wbsdpmptsp.data.remote.response.ProfileResponse
 import com.example.wbsdpmptsp.data.remote.response.RefreshTokenRequest
 import com.example.wbsdpmptsp.data.remote.response.ReportResponse
+import com.example.wbsdpmptsp.data.remote.response.SendChatResponse
 import com.example.wbsdpmptsp.data.remote.response.TokenResponse
+import com.example.wbsdpmptsp.data.remote.response.UpdateProfileResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -64,6 +69,18 @@ interface ApiService {
     suspend fun profile(
         @Header("Authorization") authHeader: String
     ): Response<ProfileResponse>
+
+    @PUT("auth/profile")
+    suspend fun updateProfile(
+        @Header("Authorization") authHeader: String,
+        @Body request: UpdateProfileRequest
+    ): Response<UpdateProfileResponse>
+
+    @PUT("auth/password")
+    suspend fun updatePassword(
+        @Header("Authorization") authHeader: String,
+        @Body request: ChangePasswordRequest
+    ): Response<MessageResponse>
 
     @POST("auth/token")
     suspend fun refreshToken(
@@ -122,4 +139,24 @@ interface ApiService {
         @Header("Authorization") authHeader: String,
         @Path("unique_code") uniqueCode: String
     ): Response<ChatResponse>
+
+    @POST("reports/{unique_code}/chats/anonymous")
+    suspend fun sendAnonymousChat(
+        @Header("Authorization") authHeader: String,
+        @Path("unique_code") uniqueCode: String,
+        @Body request: SendChatRequest
+    ): Response<SendChatResponse>
+
+    @GET("reports/{report_id}/chats")
+    suspend fun getChat(
+        @Header("Authorization") authHeader: String,
+        @Path("report_id") reportId: Int
+    ): Response<ChatResponse>
+
+    @POST("reports/{report_id}/chats")
+    suspend fun sendChat(
+        @Header("Authorization") authHeader: String,
+        @Path("report_id") reportId: Int,
+        @Body request: SendChatRequest
+    ): Response<SendChatResponse>
 }

@@ -1,7 +1,6 @@
 package com.example.wbsdpmptsp.ui.component
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -32,13 +31,16 @@ import com.example.wbsdpmptsp.data.remote.response.DetailReportResponse
 import com.example.wbsdpmptsp.ui.theme.primaryBlue
 import com.example.wbsdpmptsp.R
 import androidx.core.net.toUri
+import androidx.navigation.NavController
 
 @Composable
 fun DetailReportDialog(
     detailReport: DetailReportResponse?,
     onDismiss: () -> Unit,
-    isLoading: Boolean
-) {
+    isLoading: Boolean,
+    navController: NavController,
+    reportId: Int?
+    ) {
     Dialog(
         onDismissRequest = onDismiss,
         properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
@@ -264,7 +266,7 @@ fun DetailReportDialog(
                                     title = stringResource(R.string.rejection_reason),
                                     content = reportData.rejectionReason.toString(),
                                     contentColor = Color.Red,
-                                    iconRes = R.drawable.ic_error,
+                                    iconRes = R.drawable.ic_error_2,
                                     backgroundColor = Color(0xFFFFEBEE)
                                 )
                                 Spacer(modifier = Modifier.height(16.dp))
@@ -288,6 +290,39 @@ fun DetailReportDialog(
                             )
 
                             Spacer(modifier = Modifier.height(20.dp))
+
+                            if (reportData.processor != null && reportData.status != "menunggu-verifikasi" && reportData.status != "ditolak") {
+                                ElevatedButton(
+                                    onClick = {
+                                        navController.navigate("chat/${reportId}") {
+                                            onDismiss()
+                                        }
+                                    },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    colors = ButtonDefaults.elevatedButtonColors(
+                                        containerColor = primaryBlue,
+                                        contentColor = Color.White
+                                    ),
+                                    shape = RoundedCornerShape(8.dp)
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.ic_chat),
+                                            contentDescription = "Chat with admin",
+                                            tint = Color.White,
+                                            modifier = Modifier.size(20.dp)
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text(
+                                            text = stringResource(R.string.chat_dengan_admin),
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    }
+                                }
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
                         }
 
                         if (!reportData.files.isNullOrEmpty()) {

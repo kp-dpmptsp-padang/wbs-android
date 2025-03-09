@@ -2,16 +2,19 @@ package com.example.wbsdpmptsp.repository
 
 import android.util.Log
 import com.example.wbsdpmptsp.data.local.UserPreference
+import com.example.wbsdpmptsp.data.remote.request.ChangePasswordRequest
 import com.example.wbsdpmptsp.data.remote.request.ForgotPasswordRequest
 import com.example.wbsdpmptsp.data.remote.request.LoginRequest
 import com.example.wbsdpmptsp.data.remote.request.LogoutRequest
 import com.example.wbsdpmptsp.data.remote.request.RegisterRequest
 import com.example.wbsdpmptsp.data.remote.request.ResetPasswordRequest
+import com.example.wbsdpmptsp.data.remote.request.UpdateProfileRequest
 import com.example.wbsdpmptsp.data.remote.request.VerifyCodeRequest
 import com.example.wbsdpmptsp.data.remote.response.AuthResponse
 import com.example.wbsdpmptsp.data.remote.response.ErrorResponse
 import com.example.wbsdpmptsp.data.remote.response.MessageResponse
 import com.example.wbsdpmptsp.data.remote.response.ProfileResponse
+import com.example.wbsdpmptsp.data.remote.response.UpdateProfileResponse
 import com.example.wbsdpmptsp.data.remote.retro.ApiService
 import com.example.wbsdpmptsp.utils.Result
 import com.google.gson.Gson
@@ -174,6 +177,52 @@ class UserRepository private constructor(
                 } ?: Result.Error("Password reset failed")
             } else {
                 Result.Error(response.message() ?: "Password reset failed")
+            }
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "An error occurred")
+        }
+    }
+
+    suspend fun updateProfile(name: String): Result<UpdateProfileResponse> {
+        return try {
+            val accessToken = userPreference.getAccessToken().first()
+
+            if (accessToken == null) {
+                return Result.Error("Access token not found")
+            }
+
+            val request = UpdateProfileRequest(name)
+            val response = apiService.updateProfile("Bearer $accessToken", request)
+
+            if (response.isSuccessful) {
+                response.body()?.let { profileResponse ->
+                    Result.Success(profileResponse)
+                } ?: Result.Error("Profile not found")
+            } else {
+                Result.Error(response.message() ?: "Profile not found")
+            }
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "An error occurred")
+        }
+    }
+
+    suspend fun updatePassword(oldPassword: String, newPassword: String, confirmPassword: String): Result<MessageResponse> {
+        return try {
+            val accessToken = userPreference.getAccessToken().first()
+
+            if (accessToken == null) {
+                return Result.Error("Access token not found")
+            }
+
+            val request = ChangePasswordRequest(oldPassword, newPassword, confirmPassword)
+            val response = apiService.updatePassword("Bearer $accessToken", request)
+
+            if (response.isSuccessful) {
+                response.body()?.let { messageResponse ->
+                    Result.Success(messageResponse)
+                } ?: Result.Error("Password not updated")
+            } else {
+                Result.Error(response.message() ?: "Password not updated")
             }
         } catch (e: Exception) {
             Result.Error(e.message ?: "An error occurred")

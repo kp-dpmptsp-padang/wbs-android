@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,6 +39,7 @@ import com.example.wbsdpmptsp.R
 import com.example.wbsdpmptsp.ui.ViewModelFactory
 import com.example.wbsdpmptsp.ui.component.CustomButton
 import com.example.wbsdpmptsp.ui.component.CustomTextField
+import com.example.wbsdpmptsp.ui.component.PasswordField
 import com.example.wbsdpmptsp.utils.Result
 
 @Composable
@@ -50,6 +52,8 @@ fun LoginScreen(
     val loginResult by viewModel.loginResult.observeAsState()
     val isLoading by viewModel.isLoading.observeAsState(initial = false)
     val scrollState = rememberScrollState()
+
+    var passwordVisible by remember { mutableStateOf(false) }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -121,9 +125,15 @@ fun LoginScreen(
                 (R.string.email))
             Spacer(modifier = Modifier.height(10.dp))
 
-            CustomTextField(value = password, onValueChange = { password = it }, label =
-            stringResource(R.string.password),
-                isPassword = true)
+            PasswordField(
+                value = password,
+                onValueChange = { password = it },
+                label = stringResource(R.string.password),
+                isVisible = passwordVisible,
+                onVisibilityChange = { passwordVisible = !passwordVisible },
+                imeAction = ImeAction.Done,
+                isRequired = false
+            )
             Spacer(modifier = Modifier.height(16.dp))
 
             CustomButton(

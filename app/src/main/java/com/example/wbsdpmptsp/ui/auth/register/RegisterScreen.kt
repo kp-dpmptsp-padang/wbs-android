@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,6 +39,7 @@ import com.example.wbsdpmptsp.R
 import com.example.wbsdpmptsp.ui.ViewModelFactory
 import com.example.wbsdpmptsp.ui.component.CustomButton
 import com.example.wbsdpmptsp.ui.component.CustomTextField
+import com.example.wbsdpmptsp.ui.component.PasswordField
 import com.example.wbsdpmptsp.utils.Result
 
 @Composable
@@ -47,6 +50,10 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavHostControll
     val registerResult by viewModel.registerResult.observeAsState()
     val isLoading by viewModel.isLoading.observeAsState(initial = false)
     val scrollState = rememberScrollState()
+
+    var confirmPasswordVisible by rememberSaveable { mutableStateOf(false) }
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
+
 
     Column(
         modifier = modifier
@@ -100,7 +107,7 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavHostControll
                             Toast.makeText(context, context.getString(R.string.register_success), Toast
                                 .LENGTH_SHORT).show()
                             navController.navigate("home") {
-                                popUpTo("register") { inclusive = true }
+                                popUpTo(0) { inclusive = true }
                             }
                         }
                         is Result.Error -> {
@@ -122,19 +129,25 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavHostControll
             CustomTextField(value = email, onValueChange = { email = it }, label = stringResource(R.string.email))
             Spacer(modifier = Modifier.height(10.dp))
 
-            CustomTextField(
+            PasswordField(
                 value = password,
                 onValueChange = { password = it },
                 label = stringResource(R.string.password),
-                isPassword = true
+                isVisible = passwordVisible,
+                onVisibilityChange = { passwordVisible = !passwordVisible },
+                imeAction = ImeAction.Done,
+                isRequired = false
             )
             Spacer(modifier = Modifier.height(10.dp))
 
-            CustomTextField(
+            PasswordField(
                 value = confirmPassword,
                 onValueChange = { confirmPassword = it },
                 label = stringResource(R.string.confirm_password),
-                isPassword = true
+                isVisible = confirmPasswordVisible,
+                onVisibilityChange = { confirmPasswordVisible = !confirmPasswordVisible },
+                imeAction = ImeAction.Done,
+                isRequired = false
             )
             Spacer(modifier = Modifier.height(14.dp))
 

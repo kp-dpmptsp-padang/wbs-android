@@ -171,4 +171,17 @@
     <string name="tentang_kode_unik">Tentang Kode Unik</string>
     <string name="warning">Jangan bagikan kode unik ini kepada siapapun untuk menjaga keamanan laporan Anda.</string>
 
+    <string name="update_password">Ubah Kata Sandi</string>
+    <string name="current_password">Kata Sandi Lama</string>
+    <string name="new_password">Kata Sandi Baru</string>
+    <string name="confirm_new_password">Konfirmasi Kata Sandi Baru</string>
+    <string name="password_requirements">Ketentuan Kata Sandi:</string>
+    <string name="password_length">Minimal 6 Karakter</string>
+    <string name="passwords_match">Kata Sandi dan Konfirmasi Kata Sandi harus sama</string>
+    <string name="password_updated">Kata Sandi Berhasil Diperbarui</string>
+    <string name="change_password">Ganti Kata Sandi</string>
+    <string name="update_your_password">Perbarui Kata Sandi Anda</string>
+    <string name="password_info">Silakan masukkan kata sandi lama dan kata sandi baru Anda!</string>
+    -->
+
 </resources>
