@@ -10,6 +10,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.example.wbsdpmptsp.data.remote.response.AuthResponse
 import com.example.wbsdpmptsp.data.remote.response.TokenResponse
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_preferences")
@@ -67,5 +68,23 @@ class UserPreference(private val context: Context) {
 
     fun getOnboardingCompleted(): Flow<Boolean> = context.dataStore.data.map { preferences ->
         preferences[onboardingCompletedKey] ?: false
+    }
+
+    suspend fun getUserId(): Int? {
+        return context.dataStore.data.map { preferences ->
+            preferences[userIdKey]?.toIntOrNull()
+        }.first()
+    }
+
+    suspend fun getUserName(): String? {
+        return context.dataStore.data.map { preferences ->
+            preferences[userNameKey]
+        }.first()
+    }
+
+    suspend fun getUserRole(): String? {
+        return context.dataStore.data.map { preferences ->
+            preferences[userRoleKey]
+        }.first()
     }
 }

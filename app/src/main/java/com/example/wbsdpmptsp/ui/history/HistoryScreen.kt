@@ -34,12 +34,22 @@ fun HistoryScreen(
     viewModel: HistoryViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
 ) {
     val tabsPosition = listOf("Menunggu", "Diproses", "Ditolak", "Selesai")
+    val statusMapping = mapOf(
+        0 to "menunggu-verifikasi",
+        1 to "diproses",
+        2 to "ditolak",
+        3 to "selesai"
+    )
+
     val pagerState = rememberPagerState(pageCount = { tabsPosition.size })
     val coroutineScope = rememberCoroutineScope()
+
+    var previousPage by remember { mutableIntStateOf(pagerState.currentPage) }
 
     val history by viewModel.history.observeAsState(initial = emptyList())
     val loading by viewModel.loading.observeAsState(initial = false)
     val error by viewModel.error.observeAsState(initial = "")
+    val currentStatus by viewModel.currentStatus.observeAsState(initial = "")
 
     val reportDetail by viewModel.reportDetail.observeAsState()
     val detailLoading by viewModel.detailLoading.observeAsState(initial = false)
@@ -52,15 +62,19 @@ fun HistoryScreen(
         }
     }
 
-    LaunchedEffect(pagerState.currentPage) {
-        val status = when (tabsPosition[pagerState.currentPage]) {
-            "Menunggu" -> "menunggu-verifikasi"
-            "Diproses" -> "diproses"
-            "Ditolak" -> "ditolak"
-            "Selesai" -> "selesai"
-            else -> ""
+    LaunchedEffect(pagerState.currentPage, pagerState.isScrollInProgress) {
+        if (!pagerState.isScrollInProgress && previousPage != pagerState.currentPage) {
+            val status = statusMapping[pagerState.currentPage] ?: "menunggu-verifikasi"
+            viewModel.setCurrentStatus(status)
+            viewModel.getHistory(status)
+            previousPage = pagerState.currentPage
         }
-        viewModel.getHistory(status)
+    }
+
+    LaunchedEffect(Unit) {
+        val initialStatus = statusMapping[0] ?: "menunggu-verifikasi"
+        viewModel.setCurrentStatus(initialStatus)
+        viewModel.getHistory(initialStatus)
     }
 
     if (showDetailDialog) {
@@ -70,7 +84,9 @@ fun HistoryScreen(
                 showDetailDialog = false
                 viewModel.clearReportDetail()
             },
-            isLoading = detailLoading
+            isLoading = detailLoading,
+            navController = navController,
+            reportId = reportDetail?.data?.id
         )
     }
 
@@ -105,104 +121,106 @@ fun HistoryScreen(
                         selected = pagerState.currentPage == index,
                         onClick = {
                             coroutineScope.launch {
-                                pagerState.scrollToPage(index)
+                                if (pagerState.currentPage != index) {
+                                    pagerState.animateScrollToPage(index)
+                                }
                             }
                         }
                     )
                 }
             }
 
-            if (loading) {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            } else if (error.isNotEmpty()) {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier.weight(1f),
+                userScrollEnabled = !loading,
+            ) { page ->
+
+                if (page == pagerState.currentPage) {
+                    Box(
+                        modifier = Modifier.fillMaxSize()
                     ) {
-                        Text(
-                            text = stringResource(R.string.refresh_session),
-                            color = Color.Red,
-                            textAlign = TextAlign.Center
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        Button(
-                            onClick = {
-                                val status = when (tabsPosition[pagerState.currentPage]) {
-                                    "Menunggu" -> "menunggu-verifikasi"
-                                    "Diproses" -> "diproses"
-                                    "Ditolak" -> "ditolak"
-                                    "Selesai" -> "selesai"
-                                    else -> ""
-                                }
-                                viewModel.getHistory(status)
-                            },
-                            colors = ButtonDefaults.buttonColors(containerColor = primaryBlue)
-                        ) {
-                            Text(stringResource(R.string.refresh))
-                        }
-                    }
-                }
-            } else {
-                HorizontalPager(
-                    state = pagerState,
-                    modifier = Modifier.weight(1f)
-                ) { page ->
-                    if (history.isNullOrEmpty()) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(16.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = stringResource(R.string.no_data_history),
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                    } else {
-                        LazyColumn(
-                            modifier = Modifier
-                                .fillMaxSize(),
-                            contentPadding = PaddingValues(
-                                start = 16.dp,
-                                end = 16.dp,
-                                top = 16.dp,
-                                bottom = 32.dp
-                            ),
-                            verticalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            items(history!!.size) { index ->
-                                val item = history!![index]
-                                item?.let {
-                                    HistoryCard(
-                                        id = it.id ?: 0,
-                                        name = it.title ?: "Unknown",
-                                        description = it.detail ?: "No details",
-                                        date = it.date ?: "Unknown",
-                                        onInfoClick = { reportId ->
-                                            viewModel.getDetailReport(reportId)
-                                        }
+                        if (loading) {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator()
+                            }
+                        } else if (error.isNotEmpty()) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(16.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Text(
+                                        text = stringResource(R.string.refresh_session),
+                                        color = Color.Red,
+                                        textAlign = TextAlign.Center
                                     )
+
+                                    Spacer(modifier = Modifier.height(16.dp))
+
+                                    Button(
+                                        onClick = {
+                                            val status = statusMapping[page] ?: "menunggu-verifikasi"
+                                            viewModel.getHistory(status)
+                                        },
+                                        colors = ButtonDefaults.buttonColors(containerColor = primaryBlue)
+                                    ) {
+                                        Text(stringResource(R.string.refresh))
+                                    }
+                                }
+                            }
+                        } else if (history.isNullOrEmpty()) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(16.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.no_data_history),
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                        } else {
+                            LazyColumn(
+                                modifier = Modifier.fillMaxSize(),
+                                contentPadding = PaddingValues(
+                                    start = 16.dp,
+                                    end = 16.dp,
+                                    top = 16.dp,
+                                    bottom = 32.dp
+                                ),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                items(history!!.size) { index ->
+                                    val item = history!![index]
+                                    item?.let {
+                                        if (it.status == currentStatus) {
+                                            HistoryCard(
+                                                id = it.id ?: 0,
+                                                name = it.title ?: "Unknown",
+                                                description = it.detail ?: "No details",
+                                                date = it.date ?: "Unknown",
+                                                onInfoClick = { reportId ->
+                                                    viewModel.getDetailReport(reportId)
+                                                }
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
+                } else {
+                    Box(modifier = Modifier.fillMaxSize())
                 }
             }
         }

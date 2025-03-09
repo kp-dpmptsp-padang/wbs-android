@@ -6,14 +6,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,15 +20,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.wbsdpmptsp.R
 import com.example.wbsdpmptsp.data.remote.response.MessageResponse
 import com.example.wbsdpmptsp.data.remote.response.ProfileResponse
+import com.example.wbsdpmptsp.data.remote.response.UpdateProfileResponse
 import com.example.wbsdpmptsp.ui.ViewModelFactory
 import com.example.wbsdpmptsp.ui.component.BottomNav
 import com.example.wbsdpmptsp.ui.component.InfoSection
@@ -47,11 +50,30 @@ fun ProfileScreen(
     val logoutResult: Result<MessageResponse>? = viewModel.logoutResult.observeAsState(initial = null).value
     val profileResult: Result<ProfileResponse> = viewModel.profileResult.observeAsState(initial = Result.Loading).value
     val isLoading: Boolean = viewModel.isLoading.observeAsState(initial = false).value
+    val updateProfileResult: Result<UpdateProfileResponse>? = viewModel.updateProfileResult.observeAsState(initial = null).value
     val scrollState = rememberScrollState()
 
     val userData = when (profileResult) {
         is Result.Success -> profileResult.data.data?.user
         else -> null
+    }
+
+    var showEditProfileDialog by remember { mutableStateOf(false) }
+
+    // Monitor update profile result
+    LaunchedEffect(updateProfileResult) {
+        updateProfileResult?.let { result ->
+            when (result) {
+                is Result.Success<UpdateProfileResponse> -> {
+                    Toast.makeText(context, "Profile updated successfully", Toast.LENGTH_SHORT).show()
+                    viewModel.fetchProfile() // Refresh profile data
+                }
+                is Result.Error -> {
+                    Toast.makeText(context, result.error, Toast.LENGTH_SHORT).show()
+                }
+                else -> {}
+            }
+        }
     }
 
     Box(
@@ -91,13 +113,54 @@ fun ProfileScreen(
                     .padding(bottom = 128.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_user_profile),
-                    contentDescription = stringResource(R.string.profile),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp)
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.ic_user_profile),
+                        contentDescription = stringResource(R.string.profile),
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(150.dp)
+                    )
+
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 8.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Button(
+                            onClick = {
+                                showEditProfileDialog = true
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = primaryBlue),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "Edit Profile",
+                                color = Color.White
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Button(
+                            onClick = {
+                                navController.navigate("change_password")
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = primaryBlue),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "Ubah Password",
+                                color = Color.White
+                            )
+                        }
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(12.dp))
 
@@ -225,12 +288,95 @@ fun ProfileScreen(
             }
         }
 
+        if (showEditProfileDialog) {
+            EditProfileDialog(
+                initialName = userData?.name ?: "",
+                onDismiss = { showEditProfileDialog = false },
+                onSave = { name ->
+                    viewModel.updateProfile(name)
+                    showEditProfileDialog = false
+                }
+            )
+        }
+
         BottomNav(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter),
             navController = navController
         )
+    }
+}
+
+@Composable
+fun EditProfileDialog(
+    initialName: String,
+    onDismiss: () -> Unit,
+    onSave: (String) -> Unit
+) {
+    var name by rememberSaveable { mutableStateOf(initialName) }
+
+    Dialog(onDismissRequest = onDismiss) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            shape = RoundedCornerShape(16.dp),
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Edit Profile",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = primaryBlue
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Nama field
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Nama") },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Done
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Buttons
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Button(
+                        onClick = onDismiss,
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text("Batal")
+                    }
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    Button(
+                        onClick = { onSave(name) },
+                        colors = ButtonDefaults.buttonColors(containerColor = primaryBlue),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text("Simpan")
+                    }
+                }
+            }
+        }
     }
 }
 

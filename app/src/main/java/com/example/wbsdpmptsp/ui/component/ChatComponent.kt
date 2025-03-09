@@ -15,12 +15,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -32,7 +33,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -103,7 +106,7 @@ fun ChatInputField(
                     )
             ) {
                 Icon(
-                    imageVector = Icons.Default.Send,
+                    imageVector = Icons.AutoMirrored.Filled.Send,
                     contentDescription = "Send Message",
                     tint = Color.White,
                     modifier = Modifier.size(24.dp)
@@ -118,8 +121,21 @@ fun ChatContent(
     chats: List<DataItemChat?>,
     modifier: Modifier = Modifier
 ) {
+
+    val listState = rememberLazyListState()
+
+    val prevChatSize = remember { mutableStateOf(0) }
+
+    LaunchedEffect(chats.size) {
+        if (chats.size > prevChatSize.value) {
+            listState.animateScrollToItem(chats.size - 1)
+        }
+        prevChatSize.value = chats.size
+    }
+
     LazyColumn(
         modifier = modifier.padding(horizontal = 16.dp),
+        state = listState,
         reverseLayout = false,
         contentPadding = PaddingValues(vertical = 8.dp)
     ) {
@@ -155,7 +171,7 @@ fun ChatBubble(
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Bold,
                 color = primaryBlue,
-                modifier = Modifier.padding(start = 8.dp, bottom = 2.dp)
+                modifier = Modifier.padding(bottom = 2.dp)
             )
         }
 

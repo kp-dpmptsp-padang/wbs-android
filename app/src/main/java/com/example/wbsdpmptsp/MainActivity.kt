@@ -1,7 +1,6 @@
 package com.example.wbsdpmptsp
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.WindowInsets
@@ -17,11 +16,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.wbsdpmptsp.data.local.UserPreference
 import com.example.wbsdpmptsp.ui.about.AboutScreen
+import com.example.wbsdpmptsp.ui.auth.changePassword.ChangePasswordScreen
 import com.example.wbsdpmptsp.ui.auth.forgotPassword.ForgotPasswordScreen
 import com.example.wbsdpmptsp.ui.auth.forgotPassword.InputCodeScreen
 import com.example.wbsdpmptsp.ui.auth.forgotPassword.NewPasswordScreen
 import com.example.wbsdpmptsp.ui.auth.login.LoginScreen
 import com.example.wbsdpmptsp.ui.auth.register.RegisterScreen
+import com.example.wbsdpmptsp.ui.chat.ChatAnonymScreen
 import com.example.wbsdpmptsp.ui.chat.ChatScreen
 import com.example.wbsdpmptsp.ui.faq.FaqScreen
 import com.example.wbsdpmptsp.ui.history.HistoryScreen
@@ -83,6 +84,12 @@ class MainActivity : ComponentActivity() {
                             composable("report") { ReportScreen(navController = navController) }
                             composable("notification") { NotificationScreen(navController = navController) }
                             composable("profile") { ProfileScreen(navController = navController) }
+                            composable("change_password") {
+                                ChangePasswordScreen(
+                                    navController = navController,
+                                    onBack = { navController.popBackStack() }
+                                )
+                            }
                             composable("success") { SuccessScreen(navController = navController) }
                             composable("success_anonim/{uniqueCode}") { backStackEntry ->
                                 val uniqueCode = backStackEntry.arguments?.getString("uniqueCode") ?: ""
@@ -131,14 +138,26 @@ class MainActivity : ComponentActivity() {
                             }
                             composable("track_anonym") { TrackReportScreen(navController = navController) }
                             composable(
-                                route = "chat/{uniqueCode}",
+                                route = "chat/{uniqueCode}/anonymous",
                                 arguments = listOf(
                                     navArgument("uniqueCode") { type = NavType.StringType }
                                 )
                             ) { backStackEntry ->
                                 val uniqueCode = backStackEntry.arguments?.getString("uniqueCode") ?: ""
-                                ChatScreen(
+                                ChatAnonymScreen(
                                     uniqueCode = uniqueCode,
+                                    onBack = { navController.popBackStack() }
+                                )
+                            }
+                            composable(
+                                route = "chat/{reportId}",
+                                arguments = listOf(
+                                    navArgument("reportId") { type = NavType.IntType }
+                                )
+                            ) { backStackEntry ->
+                                val reportId = backStackEntry.arguments?.getInt("reportId") ?: 0
+                                ChatScreen(
+                                    reportId = reportId,
                                     onBack = { navController.popBackStack() }
                                 )
                             }

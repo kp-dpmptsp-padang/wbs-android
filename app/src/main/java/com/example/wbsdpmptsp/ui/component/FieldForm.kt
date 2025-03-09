@@ -1,27 +1,35 @@
 package com.example.wbsdpmptsp.ui.component
 
-import android.R.attr.label
 import android.app.DatePickerDialog
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.wbsdpmptsp.ui.theme.primaryBlue
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -187,3 +195,66 @@ fun SummaryItem(
         )
     }
 }
+
+@Composable
+fun PasswordField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    isRequired: Boolean = true,
+    isVisible: Boolean,
+    onVisibilityChange: () -> Unit,
+    imeAction: ImeAction = ImeAction.Next,
+    onImeAction: () -> Unit = {}
+) {
+    val focusManager = LocalFocusManager.current
+
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = {
+            Row {
+                Text(label, color = Color.Black)
+                if (isRequired) {
+                    Text("*", color = Color.Red)
+                }
+            }
+        },
+        modifier = Modifier.fillMaxWidth(),
+        singleLine = true,
+        visualTransformation = if (isVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        colors = OutlinedTextFieldDefaults.colors(
+            unfocusedBorderColor = Color.Gray,
+            focusedBorderColor = Color(0x801A237E)
+        ),
+        shape = RoundedCornerShape(10.dp),
+        maxLines = 1,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+            imeAction = imeAction
+        ),
+        keyboardActions = KeyboardActions(
+            onNext = {
+                focusManager.moveFocus(FocusDirection.Down)
+                onImeAction()
+            },
+            onDone = {
+                focusManager.clearFocus()
+                onImeAction()
+            }
+        ),
+        trailingIcon = {
+            TextButton(
+                onClick = onVisibilityChange,
+                contentPadding = PaddingValues(8.dp)
+            ) {
+                Text(
+                    text = if (isVisible) "Hide" else "Show",
+                    color = primaryBlue,
+                    fontSize = 12.sp
+                )
+            }
+        }
+    )
+}
+

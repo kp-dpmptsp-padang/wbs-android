@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wbsdpmptsp.data.remote.response.MessageResponse
 import com.example.wbsdpmptsp.data.remote.response.ProfileResponse
+import com.example.wbsdpmptsp.data.remote.response.UpdateProfileResponse
 import com.example.wbsdpmptsp.repository.UserRepository
 import com.example.wbsdpmptsp.utils.Result
 import kotlinx.coroutines.flow.first
@@ -21,6 +22,9 @@ class ProfileViewModel(private val repository: UserRepository) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
+
+    private val _updateProfileResult = MutableLiveData<Result<UpdateProfileResponse>>()
+    val updateProfileResult: LiveData<Result<UpdateProfileResponse>> = _updateProfileResult
 
     init {
         fetchProfile()
@@ -49,6 +53,19 @@ class ProfileViewModel(private val repository: UserRepository) : ViewModel() {
                 } else {
                     _logoutResult.value = Result.Error("Refresh token not found")
                 }
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun updateProfile(name: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                _updateProfileResult.value = repository.updateProfile(name)
+            } catch (e: Exception) {
+                _updateProfileResult.value = Result.Error(e.message ?: "Unknown error")
             } finally {
                 _isLoading.value = false
             }

@@ -280,7 +280,7 @@ fun CustomDetailReportDialog(
                                     title = stringResource(R.string.rejection_reason),
                                     content = reportData.rejectionReason.toString(),
                                     contentColor = Color.Red,
-                                    iconRes = R.drawable.ic_error,
+                                    iconRes = R.drawable.ic_error_2,
                                     backgroundColor = Color(0xFFFFEBEE)
                                 )
                                 Spacer(modifier = Modifier.height(16.dp))
@@ -308,7 +308,7 @@ fun CustomDetailReportDialog(
                             if (reportData.processor != null && reportData.status != "menunggu-verifikasi" && reportData.status != "ditolak") {
                                 ElevatedButton(
                                     onClick = {
-                                        navController.navigate("chat/${uniqueCode}") {
+                                        navController.navigate("chat/${uniqueCode}/anonymous") {
                                             onDismiss()
                                         }
                                     },
